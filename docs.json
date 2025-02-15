@@ -1,13 +1,13 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Mint Starter Kit",
+  "name": "healthKERI",
   "colors": {
     "primary": "#16A34A",
     "light": "#07C983",
     "dark": "#15803D"
   },
-  "favicon": "/favicon.svg",
+  "favicon": "/favicon.png",
   "navigation": {
     "tabs": [
       {
@@ -17,19 +17,21 @@
             "group": "Get Started",
             "pages": [
               "introduction",
+              "environment",
+              "software",
               "quickstart",
-              "development"
+              "cloud",
+              "anchors",
+              "portals"
             ]
           },
           {
-            "group": "Essentials",
+            "group": "KERI",
             "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/settings",
-              "essentials/navigation",
-              "essentials/reusable-snippets"
+              "essentials/overview",
+              "essentials/standards",
+              "essentials/open-source",
+              "essentials/community"
             ]
           }
         ]
@@ -42,14 +44,6 @@
             "pages": [
               "api-reference/introduction"
             ]
-          },
-          {
-            "group": "Endpoint Examples",
-            "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete"
-            ]
           }
         ]
       }
@@ -57,14 +51,9 @@
     "global": {
       "anchors": [
         {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
+          "anchor": "healthKERI",
+          "href": "https://healthKERI.com",
           "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Community",
-          "href": "https://mintlify.com/community",
-          "icon": "slack"
         },
         {
           "anchor": "Blog",
@@ -75,27 +64,27 @@
     }
   },
   "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
+    "light": "/logo/healthKERI-logo-primary-black.png",
+    "dark": "/logo/healthKERI-logo-primary-white.png"
   },
   "navbar": {
     "links": [
       {
         "label": "Support",
-        "href": "mailto:hi@mintlify.com"
+        "href": "mailto:info@healthKERI.com"
       }
     ],
     "primary": {
       "type": "button",
-      "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
+      "label": "Get Started",
+      "href": "https://app.healthkeri.net"
     }
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
+      "x": "https://x.com/healthKERI",
+      "github": "https://github.com/healthKERI",
+      "linkedin": "https://linkedin.com/company/healthKERI"
     }
   }
 }
