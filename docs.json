@@ -53,11 +53,11 @@
         {
           "anchor": "healthKERI",
           "href": "https://healthKERI.com",
-          "icon": "book-open-cover"
+          "icon": "lock"
         },
         {
           "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
+          "href": "https://www.healthdatamanagement.com/articles/the-necessity-to-adopt-the-five-rights-of-secure-health-data?id=134713",
           "icon": "newspaper"
         }
       ]
