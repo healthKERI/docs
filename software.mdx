@@ -1,107 +1,79 @@
 ---
 title: 'Software'
-description: 'Preview changes locally to update your docs'
+description: 'Download and install Locksmith and our tutorial repository.'
 ---
 
 <Info>
-  **Prerequisite**: Please install Node.js (version 19 or higher) before proceeding. <br />
-  Please upgrade to ```docs.json``` before proceeding and delete the legacy ```mint.json``` file.
+  **Prerequisites**: Please see [Environment](/environment) before proceeding. <br />
 </Info>
 
-Follow these steps to install and run Mintlify on your operating system:
+Follow these steps to install and run our tutorials on your operating system:
 
-**Step 1**: Install Mintlify:
+
+### Download and Install
+
+**Step 1**: Install Locksmith:
+
+Locksmith is our [KERI](/essentials/overview) identity wallet and secure web proxy.  We currently only have an installable version for macOS (arm64) PCs.  To use any other operating system, you can download our Python Wheel and install as described below
+
+(Other native installers will be available shortly.).
+
+<Tabs>
+
+    <Tab title="macOS">
+        ```bash Shell
+        curl -s -L -o locksmith.dmg https://healthkeri-deployment.sfo3.digitaloceanspaces.com/locksmith/v0.0.1/MacOS/Locksmith.dmg
+        ```
+        Locate `locksmith.dmg in Finder, double click and drag the Locksmith Icon into Applications folder.
+        <img
+            className="block"
+            src="/images/locksmith-install.png"
+            alt="Locksmith"
+        />
+
+    </Tab>
+    <Tab title="Python">
+        If you are using an operation system other than macOS, you need to use the correct version of Python specified [here](/environment):
+
+      ```bash Shell
+      python -m venv ./locksmith
+      source ./locksmith/bin/activate
+      curl -s -L -o locksmith-0.0.1-py3-none-any.whl https://healthkeri-deployment.sfo3.digitaloceanspaces.com/locksmith/v0.0.1/Locksmith-0.0.1-py3-none-any.whl
+      pip install locksmith-0.0.1-py3-none-any.whl
+      ```
+
+        <Info>**Recommended:** We recommend using a unique Python virtual environment as detailed above.</Info>
+    </Tab>
+</Tabs>
+
+**Step 2**: Clone the healthKERI `rack-docker` repository:
 
 <CodeGroup>
 
-  ```bash npm
-  npm i -g mintlify
-  ```
-
-```bash yarn
-yarn global add mintlify
+```bash Git
+git clone https://github.com/healthKERI/rack-docker.git
+cd rack-docker
 ```
-
 </CodeGroup>
+<Info>
+    **Note**: Please see this [Guide](https://docs.github.com/en/enterprise-server@3.13/desktop/overview/getting-started-with-github-desktop) for using GitHub Desktop instead of the command line. <br />
+</Info>
 
-**Step 2**: Navigate to the docs directory (where the `docs.json` file is located) and execute the following command:
 
-```bash
-mintlify dev
-```
 
-A local preview of your documentation will be available at `http://localhost:3000`.
+### Launching Locksmith
 
-### Custom Ports
+If you downloaded one of our native installers for [Locksmith](#Download and Install) please use your Operating System to find and launch the application.
 
-By default, Mintlify uses port 3000. You can customize the port Mintlify runs on by using the `--port` flag. To run Mintlify on port 3333, for instance, use this command:
-
-```bash
-mintlify dev --port 3333
-```
-
-If you attempt to run Mintlify on a port that's already in use, it will use the next available port:
-
-```md
-Port 3000 is already in use. Trying 3001 instead.
-```
-
-## Mintlify Versions
-
-Please note that each CLI release is associated with a specific version of Mintlify. If your local website doesn't align with the production version, please update the CLI:
-
-<CodeGroup>
-
-```bash npm
-npm i -g mintlify@latest
-```
-
-```bash yarn
-yarn global upgrade mintlify
-```
-
-</CodeGroup>
-
-## Validating Links
-
-The CLI can assist with validating reference links made in your documentation. To identify any broken links, use the following command:
+If you installed the Python wheel in a virtual machine, you can launch Locksmith with the following command:
 
 ```bash
-mintlify broken-links
+source ${PATH_TO_VENV}/bin/activate
+lockmsith
 ```
 
-## Deployment
+Locksmith will attempt to create database files in one of two directories.  If you have a directory named `/usr/local/var/keri` and the current user has write access to that directory it will create all database files and keystores at that location.
+Otherwise, it will create and use a directory named `.keri` in the current user's home directory.  If you want to back up your KERI identity information and your keystore, you can back up which ever of these two directories is created on your device.
 
-<Tip>
-  Unlimited editors available under the [Pro
-  Plan](https://mintlify.com/pricing) and above.
-</Tip>
 
-If the deployment is successful, you should see the following:
-
-<Frame>
-  <img src="/images/checks-passed.png" style={{ borderRadius: '0.5rem' }} />
-</Frame>
-
-## Code Formatting
-
-We suggest using extensions on your IDE to recognize and format MDX. If you're a VSCode user, consider the [MDX VSCode extension](https://marketplace.visualstudio.com/items?itemName=unifiedjs.vscode-mdx) for syntax highlighting, and [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) for code formatting.
-
-## Troubleshooting
-
-<AccordionGroup>
-  <Accordion title='Error: Could not load the "sharp" module using the darwin-arm64 runtime'>
-
-    This may be due to an outdated version of node. Try the following:
-    1. Remove the currently-installed version of mintlify: `npm remove -g mintlify`
-    2. Upgrade to Node v19 or higher.
-    3. Reinstall mintlify: `npm install -g mintlify`
-  </Accordion>
-
-  <Accordion title="Issue: Encountering an unknown error">
-  
-    Solution: Go to the root of your device and delete the \~/.mintlify folder. Afterwards, run `mintlify dev` again.
-  </Accordion>
-</AccordionGroup>
-
-Curious about what changed in the CLI version? [Check out the CLI changelog.](https://www.npmjs.com/package/mintlify?activeTab=versions)
+For more information see the [KERI Python Reference Implementation](https://github.com/WebOfTrust/keripy).
