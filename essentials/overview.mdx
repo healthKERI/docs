@@ -26,7 +26,7 @@ infrastructure, it enables verification by anyone, anywhere, at any time.
 
 ## Core Concepts
 
-### Autonomic Identifiers (AIDs)
+### Autonomic Identifier (AID)
 KERI’s Self-Certifying or Autonomic Identifiers (AIDs) are derived from cryptographic key material, binding each
 identifier to the holder’s private key. This self-certifying property removes the need for a centralized certificate
 authority to vouch for the validity of an identity. Instead, each AID “speaks for itself” by proving control of its
@@ -38,7 +38,7 @@ events. These events include the inception (creation) of an AID, any key rotatio
 delegations). Because each new event references the cryptographic hash of the previous event, the KEL provides an
 immutable history that is verifiable by anyone.
 
-### Witnesses
+### Witness
 To ensure high availability and security—even when direct exchange between controllers is not practical—KERI introduces
 witnesses. A controller of an AID selects and manages its own pool of witnesses, which can be hosted on any combination
 of third-party services or self-owned infrastructure. Each witness attests to the validity of a controller’s KEL events
@@ -47,7 +47,7 @@ called KAWA, which ensures consistent, fault-tolerant replication of the KEL acr
 malicious attempts to alter or fork the log. By design, witnesses are under the exclusive control of the AID’s
 controller and can be changed at any time without impacting the trust model.
 
-### Watchers
+### Watcher
 Watchers serve a complementary role for those validating another party’s events. They continuously observe
 KELs via witnesses, (potentially for multiple AIDs) and apply a “first seen, always seen” policy. Once a watcher
 has received and recognized an event, any later conflicting version of the same event is considered invalid. This
