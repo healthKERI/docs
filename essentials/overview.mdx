@@ -1,88 +1,62 @@
 ---
-title: 'KERI Overview'
+title: '[KERI](https://trustoverip.github.io/tswg-keri-specification/) Overview'
 description: 'Text, title, and styling in standard markdown'
 icon: 'lock'
 ---
 
-## Titles
+## What is [KERI](https://trustoverip.github.io/tswg-keri-specification/)?
 
-Best used for section headers.
+KERI, or **Key Event Receipt Infrastructure**, is a decentralized framework for creating and managing digital
+identifiers. It uses cryptographic methods to maintain an immutable log of identity events—such as creation, rotation,
+and delegation—thereby removing the need for centralized authorities. This framework is designed to empower edge devices
+and individual entities to manage their own identities securely, making it particularly valuable in fields like
+healthcare data exchange where privacy and trust are critical.
 
-```md
-## Titles
-```
+## What does [KERI](https://trustoverip.github.io/tswg-keri-specification/) do?
 
-### Subtitles
+The KERI protocol provides verifiable authorship of any message or data item via secure cryptographically
+verifiable attribution to a KERI Identifier as a primary root-of-trust. This root-of-trust is cryptographic,
+not administrative, because rather than relying on any trusted third-party administrative process, it is established
+and governed at the edge with cryptographically verifiable data structures. The root-of-trust enables end
+verifiability where every data item is attributable to its source by any recipient verifier, without reliance on any
+infrastructure not under the verifier’s ultimate control. Therefore, KERI has no security dependency on any other
+infrastructure. Rather than relying on security guarantees that may or may not be provided by the traditional internet
+infrastructure, it enables verification by anyone, anywhere, at any time.
 
-Best use to subsection headers.
+## Core Concepts
 
-```md
-### Subtitles
-```
+### Self-Certifying Identifiers (AIDs)
+KERI’s Autonomic Identifiers (AIDs) are derived from cryptographic key material, binding each identifier to the holder’s
+private key. This self-certifying property removes the need for a centralized certificate authority to vouch for the
+validity of an identity. Instead, each AID “speaks for itself” by proving control of its corresponding private key.
 
-<Tip>
+### Key Event Log (KEL)
+Every AID in KERI is accompanied by a Key Event Log (KEL): a continuously growing, tamper-evident record of identity
+events. These events include the inception (creation) of an AID, any key rotations, and other relevant changes (like
+delegations). Because each new event references the cryptographic hash of the previous event, the KEL provides an
+immutable history that is verifiable by anyone.
 
-Each **title** and **subtitle** creates an anchor and also shows up on the table of contents on the right.
+### Witnesses
+To ensure high availability and security—even when direct exchange between controllers is not practical—KERI introduces
+witnesses. A controller of an AID selects and manages its own pool of witnesses, which can be hosted on any combination
+of third-party services or self-owned infrastructure. Each witness attests to the validity of a controller’s KEL events
+by issuing signed receipts. These receipts are exchanged with other witnesses and processed using an agreement algorithm
+called KAWA, which ensures consistent, fault-tolerant replication of the KEL across all witnesses and Guards against
+malicious attempts to alter or fork the log. By design, witnesses are under the exclusive control of the AID’s
+controller and can be changed at any time without impacting the trust model.
 
-</Tip>
+### Watchers
+Watchers serve a complementary role for those validating another party’s events. They continuously observe
+KELs via witnesses, (potentially for multiple AIDs) and apply a “first seen, always seen” policy. Once a watcher
+has received and recognized an event, any later conflicting version of the same event is considered invalid. This
+allows watchers to detect duplicity (e.g., if a compromised or dishonest controller tries to publish conflicting
+versions of its KEL).
 
-## Text Formatting
+Unlike witnesses, watchers are not tied to a single AID. Instead, each validator decides how to run or source its
+watcher infrastructure (self-hosted, third-party, or both). Watchers can also exchange signed receipts of key events,
+using KAWA to improve their fault tolerance and availability. When they detect a provably duplicitous key state,
+they can act as Jurors by sharing that evidence with other watchers or validators. Others may serve as Judges,
+evaluating events based on confirmed duplicity evidence.
 
-We support most markdown formatting. Simply add `**`, `_`, or `~` around text to format it.
-
-| Style         | How to write it   | Result          |
-| ------------- | ----------------- | --------------- |
-| Bold          | `**bold**`        | **bold**        |
-| Italic        | `_italic_`        | _italic_        |
-| Strikethrough | `~strikethrough~` | ~strikethrough~ |
-
-You can combine these. For example, write `**_bold and italic_**` to get **_bold and italic_** text.
-
-You need to use HTML to write superscript and subscript text. That is, add `<sup>` or `<sub>` around your text.
-
-| Text Size   | How to write it          | Result                 |
-| ----------- | ------------------------ | ---------------------- |
-| Superscript | `<sup>superscript</sup>` | <sup>superscript</sup> |
-| Subscript   | `<sub>subscript</sub>`   | <sub>subscript</sub>   |
-
-## Linking to Pages
-
-You can add a link by wrapping text in `[]()`. You would write `[link to google](https://google.com)` to [link to google](https://google.com).
-
-Links to pages in your docs need to be root-relative. Basically, you should include the entire folder path. For example, `[link to text](/writing-content/text)` links to the page "Text" in our components section.
-
-Relative links like `[link to text](../text)` will open slower because we cannot optimize them as easily.
-
-## Blockquotes
-
-### Singleline
-
-To create a blockquote, add a `>` in front of a paragraph.
-
-> Dorothy followed her through many of the beautiful rooms in her castle.
-
-```md
-> Dorothy followed her through many of the beautiful rooms in her castle.
-```
-
-### Multiline
-
-> Dorothy followed her through many of the beautiful rooms in her castle.
->
-> The Witch bade her clean the pots and kettles and sweep the floor and keep the fire fed with wood.
-
-```md
-> Dorothy followed her through many of the beautiful rooms in her castle.
->
-> The Witch bade her clean the pots and kettles and sweep the floor and keep the fire fed with wood.
-```
-
-### LaTeX
-
-Mintlify supports [LaTeX](https://www.latex-project.org) through the Latex component.
-
-<Latex>8 x (vk x H1 - H2) = (0,1)</Latex>
-
-```md
-<Latex>8 x (vk x H1 - H2) = (0,1)</Latex>
-```
+By distributing these “first-seen” records widely and quickly, watchers ensure that original, valid key states are
+recognized globally while simultaneously detecting and mitigating attempts to rewrite or fork an AID’s event history.
