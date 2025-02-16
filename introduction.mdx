@@ -4,14 +4,25 @@ description: "Welcome to healthKERI, we'll show you how to Sign Everything."
 ---
 
 <img
+    className="block dark:hidden"
+    src="/images/sign-everything-light.png"
+    alt="Sign Everything"
+/><img
   className="hidden dark:block"
   src="/images/sign-everything.png"
-  alt="Hero Dark"
+  alt="Sign Everything"
 />
 “Signing everything” means using cryptographically secure digital signatures on every transaction. In this zero-trust environment, data is only sent/ingested when valid digital signatures are used. No more shared secrets.
+
+We achieve this by combining the most advanced key management protocol available, **Key Event Receipt Infrastructure** [KERI](https://trustoverip.github.io/tswg-keri-specification/), with an approach to confidential and authentic data exchange called **ESSR** for "Encrypt Sender's key and then Sign Receiver's key" which is detailed here [ESSR](https://eprint.iacr.org/2001/079). (For a more accessible explanation see the following [PKAE1](https://neilmadden.blog/2018/11/14/public-key-authenticated-encryption-and-why-you-want-it-part-i/), [PKAE2](https://neilmadden.blog/2018/11/26/public-key-authenticated-encryption-and-why-you-want-it-part-ii/), [PKAE3](https://neilmadden.blog/2018/12/14/public-key-authenticated-encryption-and-why-you-want-it-part-iii/))
+
+This unique combination of protocols allows our gateways to establish [True Zero-Trust](https://www.cisa.gov/resources-tools/resources/modern-approaches-network-access-security) connections that rely on post quantum secure identifiers, while keeping your "keys at the edge", where they belong.
+
+
+
 ## Setting up
 
-The first step to securing all your data is learning how our Routing, Authentication and Confidentiality with KERI (RACK) Gateways work.
+The first step to securing all your data is learning how our **Routing, Authentication and Confidentiality with KERI (RACK)** Gateways work.
 
 <CardGroup cols={2}>
   <Card
@@ -26,13 +37,13 @@ The first step to securing all your data is learning how our Routing, Authentica
     icon="link"
     href="/software"
   >
-    Get the RACK starter kit Docker image, compose files and associated data
+    Get the <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> starter kit Docker image, compose files and associated data
   </Card>
 </CardGroup>
 
 ## Learning RACK
 
-Install and configure RACK using the following tutorials to learn how RACK works to secure you data transactions.
+Install and configure <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> using the following tutorials to learn how<Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip>works to secure you data transactions.
 
 <CardGroup cols={2}>
   <Card
@@ -40,7 +51,7 @@ Install and configure RACK using the following tutorials to learn how RACK works
     icon="rocket"
     href="https://mintlify.com/docs/settings/global"
   >
-    Connect 2 RACK gateway peers to secure data between 2 Mirth instances
+    Connect 2 <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> gateway peers to secure data between 2 Mirth instances
   </Card>
   <Card
     title="Routing Through the Cloud"
