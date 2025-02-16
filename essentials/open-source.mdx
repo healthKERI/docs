@@ -1,37 +1,56 @@
 ---
 title: 'Open Source'
-description: 'Display inline code and code blocks'
+description: 'An overview of the most active open source KERI implementations and how they fit into the broader ecosystem.'
 icon: 'code'
 ---
 
-## Basic
+| Acronym | Full Name | Link |
+|---|---|---|
+| KERIpy | Key Event Receipt Infrastructure Python | [KERIpy Github](https://github.com/WebOfTrust/keripy) |
+| KERIA | Key Event Receipt Infrastructure Agent | [KERIA Github](https://github.com/WebOfTrust/keria) |
+| Signify-TS | Signify Type Script | [Signify-TS Github](https://github.com/WebOfTrust/signify-ts) |
 
-### Inline Code
+## Implementations
 
-To denote a `word` or `phrase` as code, enclose it in backticks (`).
+---
 
-```
-To denote a `word` or `phrase` as code, enclose it in backticks (`).
-```
+### [KERIpy](https://github.com/WebOfTrust/keripy)
+KERIpy is the most mature and widely used KERI implementation, written in Python. It serves as a reference for many
+other implementations in the ecosystem.
 
-### Code Block
+**Key Features:**
+- Support for the core KERI protocol specification
+- Comprehensive test suite and regular updates from the KERI community
+- Example scripts and tooling to help you bootstrap a KERI environment
 
-Use [fenced code blocks](https://www.markdownguide.org/extended-syntax/#fenced-code-blocks) by enclosing code in three backticks and follow the leading ticks with the programming language of your snippet to get syntax highlighting. Optionally, you can also write the name of your code after the programming language.
+**Use Cases:**
+- Ideal for anyone wanting a stable, well-documented Python library from which to learn KERI and implement their own
+applications.
 
-```java HelloWorld.java
-class HelloWorld {
-    public static void main(String[] args) {
-        System.out.println("Hello, World!");
-    }
-}
-```
+---
 
-````md
-```java HelloWorld.java
-class HelloWorld {
-    public static void main(String[] args) {
-        System.out.println("Hello, World!");
-    }
-}
-```
-````
+### [KERIA](https://github.com/WebOfTrust/keria)
+KERIA (Key Event Receipt Infrastructure Agent) provides cloud-based agents built on top of the KERI protocol for the
+purpose of managing KERI identifiers in a hosted environment.
+
+**Key Features:**
+- Preconfigured endpoints for managing KERI events in the cloud
+- Integration with KERIpy for event processing
+
+**Use Cases:**
+- Organizations or individuals looking to host their own KERI agent or agent based service
+
+---
+
+### [Signify-TS](https://github.com/WebOfTrust/signify-ts)
+Signify-TS is a KERI implementation in TypeScript, targeting Node.js and browser-based applications. It is an excellent
+choice if your stack is JavaScript/TypeScript-heavy.
+
+**Key Features:**
+- Written for modern JavaScript/TypeScript environments; integrate in full-stack or front-end apps.
+- Active development to remain aligned with the evolving KERI standard.
+- Can be used alongside popular frameworks (React, Angular, Vue) for decentralized identity features.
+
+**Use Cases:**
+- Building user-facing web applications that interact with KERI-based identifiers directly in the browser.
+- Developers preferring TypeScript’s type-safety and ecosystem.
