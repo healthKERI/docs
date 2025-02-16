@@ -1,87 +1,72 @@
 ---
 title: 'Standards'
-description: 'The navigation field in docs.json defines the pages that go in the navigation menu'
+description: 'HealthKERI products and infrastructure adhere to the following standards, which are currently in review at
+Trust Over IP (TOIP) and on track to become ISO standards.'
 icon: 'map'
 ---
 
-The navigation menu is the list of links on every website.
+| Acronym | Full Name | Link | Authors | Status |
+|---|---|---|---|---|
+| ACDC | Authentic Chained Data Containers | [ACDC Specification](https://github.com/trustoverip/tswg-acdc-specification) | Samuel Smith | ToIP Draft |
+| CESR | Composable Event Streaming Representation | [CESR Specification](https://github.com/trustoverip/tswg-cesr-specification) | Samuel Smith | ToIP Draft |
+| KERI | Key Event Receipt Infrastructure | [KERI Specification](https://github.com/trustoverip/tswg-keri-specification) | Samuel Smith | ToIP Draft |
 
-You will likely update `docs.json` every time you add a new page. Pages do not show up automatically.
+## [Trust Over IP (ToIP)](https://www.trustoverip.org/)
+The Trust Over IP (ToIP) Foundation provides a comprehensive framework for establishing verifiable trust in digital
+interactions. By defining a layered architecture for interoperable trust solutions, ToIP enables diverse
+organizations—such as healthcare providers, insurers, and technology vendors—to adopt common standards for identity,
+security, and governance. These standards underpin the specifications (KERI, ACDC, CESR) currently in review at ToIP.
 
-## Navigation syntax
+## [Authentic Chained Data Containers (ACDC)](https://github.com/trustoverip/tswg-acdc-specification)
+Authentic Chained Data Containers (ACDC) define a portable format for packaging and linking digital credentials in a
+tamper-evident way. By chaining data objects and binding them cryptographically, ACDC ensures provenance and
+authenticity. In healthcare, this format can carry verifiable patient data, lab results, or insurance documents across
+different systems without compromising security or trust.
 
-Our navigation syntax is recursive which means you can make nested navigation groups. You don't need to include `.mdx` in page names.
+## [Composable Event Streaming Representation (CESR)](https://github.com/trustoverip/tswg-cesr-specification)
+Composable Event Streaming Representation (CESR) provides a flexible, compact structure for streaming cryptographic
+evidence of events. It’s designed for interoperability with other standards like KERI, enabling real-time verification
+of data integrity and authenticity.
 
-<CodeGroup>
+## [Key Event Receipt Infrastructure (KERI)](https://github.com/trustoverip/tswg-keri-specification)
+Key Event Receipt Infrastructure (KERI) introduces a decentralized key management framework that secures digital
+identities through cryptographic event logs. Each event (e.g., key rotations or credential issuance) is signed and
+anchored so that it can be independently verified without reliance on centralized authorities. In healthcare data
+exchange, KERI ensures that patient records, provider identities, and other sensitive information are bound to
+cryptographically verifiable events. KERI relies on Composable Event Streaming Representation (CESR) to
+provide flexible, interoperable event streams, while Authentic Chained Data Containers (ACDC) enable tamper-evident
+chaining of digital credentials in KERI ecosystems. Together, these standards establish an end-to-end ecosystem for
+secure, verifiable data management.
 
-```json Regular Navigation
-"navigation": {
-  "tabs": [
-    {
-      "tab": "Docs",
-      "groups": [
-        {
-          "group": "Getting Started",
-          "pages": ["quickstart"]
-        }
-      ]
-    }
-  ]
-}
-```
+## Fast Track to ISO
+The JTC1 Publicly Available Specification (PAS) process provides a way for specifications developed outside ISO/IEC to
+become JTC1 International Standards. It functions similarly to the ISO Fast Track process but is specific to JTC1
+(Information Technology). Below is an overview of how the process works for KERI-related specifications under Trust
+Over IP (ToIP).
 
-```json Nested Navigation
-"navigation": {
-  "tabs": [
-    {
-      "tab": "Docs",
-      "groups": [
-        {
-          "group": "Getting Started",
-          "pages": [
-            "quickstart",
-            {
-              "group": "Nested Reference Pages",
-              "pages": ["nested-reference-page"]
-            }
-          ]
-        }
-      ]
-    }
-  ]
-}
-```
+### Submission Pathway
 
-</CodeGroup>
+- **PAS Submitter:** The Joint Development Foundation (JDF), part of the Linux Foundation, is a recognized ISO/IEC JTC1
+PAS submitter.
 
-## Folders
+- **Request to Initiate PAS:** Any proposal to advance a specification via the PAS process must come from a recognized
+PAS submitter, in this case the JDF.
 
-Simply put your MDX files in folders and update the paths in `docs.json`.
+### Specifications Preparation
 
-For example, to have a page at `https://yoursite.com/your-folder/your-page` you would make a folder called `your-folder` containing an MDX file called `your-page.mdx`.
+- **[Trust Over IP ISO Template](https://trustoverip.org/wp-content/uploads/ToIP-Trust-Assurance-and-Certification-Controlled-Document-Template-V1.0-2021-10-19.pdf):**
+KERI-related specifications (KERI, ACDC, CESR) destined for ISO are developed using the template linked in the
+subsection title to ensure proper formatting and structure.
 
-<Warning>
+- **ToIP Approval**: Each specification undergoes ToIP [Working Group](https://lf-toip.atlassian.net/wiki/spaces/HOME/pages/)
+review and must receive approval from the ToIP Steering Committee before submission.
 
-You cannot use `api` for the name of a folder unless you nest it inside another folder. Mintlify uses Next.js which reserves the top-level `api` folder for internal server calls. A folder name such as `api-reference` would be accepted.
+### Ballot and Publication
 
-</Warning>
-
-```json Navigation With Folder
-"navigation": {
-  "tabs": [
-    {
-      "tab": "Docs",
-      "groups": [
-        {
-          "group": "Group Name",
-          "pages": ["your-folder/your-page"]
-        }
-      ]
-    }
-  ]
-}
-```
-
-## Hidden Pages
-
-MDX files not included in `docs.json` will not show up in the sidebar but are accessible through the search bar and by linking directly to them.
+1. **DIS (Draft International Standard) Ballot:** Once JDF submits a specification to JTC1, the proposal is balloted as
+a DIS for a 12-week voting period.
+2. **Translation:** An additional 8-week period is typically allowed for translation and review.
+3. **Publication:** Upon successful ballot and final approval, the KERI-related specification is published as an ISO/IEC
+standard. By following these steps, the KERI, ACDC, and CESR specifications can move from their current ToIP Draft
+status to recognized ISO/IEC International Standards, contributing to a more robust and universally accepted framework
+for secure data exchange.
