@@ -38,15 +38,17 @@ Locksmith is our [KERI](/essentials/overview) identity wallet and secure web pro
       ```bash Shell
       python -m venv ./locksmith
       source ./locksmith/bin/activate
-      curl -s -L -o locksmith-0.0.1-py3-none-any.whl https://healthkeri-deployment.sfo3.digitaloceanspaces.com/locksmith/v0.0.1/Locksmith-0.0.1-py3-none-any.whl
-      pip install locksmith-0.0.1-py3-none-any.whl
+      curl -s -L -o rack-1.0.0-py3-none-any.whl https://healthkeri-deployment.sfo3.digitaloceanspaces.com/rack/rack-1.0.0-py3-none-any.whl
+      curl -s -L -o Locksmith-0.0.1-py3-none-any.whl https://healthkeri-deployment.sfo3.digitaloceanspaces.com/locksmith/v0.0.1/Locksmith-0.0.1-py3-none-any.whl
+      pip install rack-1.0.0-py3-none-any.whl
+      pip install Locksmith-0.0.1-py3-none-any.whl
       ```
 
         <Info>**Recommended:** We recommend using a unique Python virtual environment as detailed above.</Info>
     </Tab>
 </Tabs>
 
-**Step 2**: Clone the healthKERI `rack-docker` repository:
+**Step 2**: Clone the healthKERI [rack-docker](https://github.com/healthKERI/rack-docker) repository:
 
 <CodeGroup>
 
