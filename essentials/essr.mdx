@@ -1,0 +1,37 @@
+---
+title: 'ESSR'
+description: 'ESSR (Encrypt Sender’s key and then Sign Receiver’s key) in combination with KERI is a pattern that
+ensures both end‐to‐end confidentiality and provable authenticity while eliminating the need for centralized
+authorities.'
+icon: 'paper-plane-top'
+---
+
+## [Encryption](https://www.encryptionconsulting.com/education-center/encryption-and-signing/)
+Encryption is the process of converting plaintext into ciphertext such that only someone with the appropriate key can
+reverse it. In a KERI ecosystem, each entity is represented by an Autonomic Identifier (AID) tied to unique key pairs.
+An identifier's current public key(s) are anchored in the Key Event Log (KEL), which is published by a witness.
+By way of a watcher, the sender can retrieve the recipient's KEL from their witness and derive a public key for
+encryption. Once the sender's message is encrypted via this public key, the sender sends the message to the recipient.
+only the intended recipient who controls the corresponding private key can decrypt and read the data, ensuring
+end-to-end confidentiality.
+
+## [Signing](https://www.encryptionconsulting.com/education-center/encryption-and-signing/)
+Signing is the process of generating a cryptographic signature over data, allowing verifiers to confirm the data's
+origin and integrity. In the context of KERI, this guarantees that the data truly originates from the party controlling
+the private key associated with a given AID. To sign data, a sender uses one of their AID's private signing keys; any recipient
+can then verify the signature by fetching the matching public key the from the sender's KEL via the recipient's watcher
+and sender's witness. This approach eliminates the need for centralized authorities to vouch for public keys, since the
+KEL’s integrity ensures that the correct key belongs to the sender.
+
+## Bringing It All Together: [ESSR](https://eprint.iacr.org/2001/079) in [KERI](./overview)
+ESSR (Encrypt Sender’s key and then Sign Receiver’s key) is a pattern in which the sender first encrypts data or a
+message for the receiver, then attaches a signature. In combination with KERI infrastructure, this pattern ensures that
+the intended recipient is the only one able to decrypt the data, while also proving that the sender truly originated
+the message.
+
+This approach provides end-to-end confidentiality by encrypting with the receiver’s public key derived from their KEL
+and ensures non-repudiation via the sender’s verifiable signature (which is likewise anchored in their own KEL).
+Because KERI watchers and witnesses confirm that no duplicitous key states exist, both parties can trust they are always
+using each other’s current valid keys. If either party rotates their key pair, witnesses and watchers make these changes
+to the KEL publicly discoverable and verifiable, eliminating the need for reissuing certificates or relying on any
+central authority.

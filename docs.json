@@ -29,6 +29,7 @@
             "group": "KERI",
             "pages": [
               "essentials/overview",
+              "essentials/essr",
               "essentials/standards",
               "essentials/open-source",
               "essentials/community"
