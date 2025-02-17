@@ -34,17 +34,68 @@ We've provided a Docker image and Docker compose files to get started configurin
 
 ## 1. Launch healthKERI RACK and Mirth Connect
 
-Launch two instances of <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> and two instances of Mirth Connect using the following Docker compose command:
+This tutorial will show you how to launch two <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> Gateways and configure them to sign and encrypt all data exchanged
+between two Mirth Connect integration engine instances.
+
+<AccordionGroup>
+    <Accordion title="What is Mirth Connect">
+        Mirth Connect is an open-source integration engine designed for data exchange in the healthcare industry. It enables
+        communication between disparate information systems by supporting various healthcare data exchange standards, namely, HL7 and FHIR
+        for text based patient health information, and DICOM for medical imaging transfer. Mirth Connect is intended to
+        facilitate the routing, transformation, and filtering of clinical data between different healthcare sectors and their
+        associated information systems. It is used to integrate data from hospitals, clinics, imaging centers,
+        laboratories, and pharmacies, and more. For the purposes of this tutorial, Mirth Connect serves as a stand-in for any
+        given integration engine used in the HealthCare sector.
+    </Accordion>
+</AccordionGroup>
+
+In the `rack-docker` repository there is a Docker compose file called `mirth-connect-rack-compose-sample.yaml` that can be used to launch two instances of <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> and two instances of Mirth Connect using the following command:
 
 ```bash Docker Compose
 docker compose -f ./examples/mirth-connect-rack-compose-sample.yaml up
 ```
-Copy cesr files out of docker containers with
+
+In addition to the two instances of <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> and Mirth, this compose file also creates two temporary containers that create one [channel](https://docs.nextgen.com/bundle/Mirth_User_Guide_4_5_0/page/connect/connect/topics/c_Channel_Components_connect_ug.html) on each Mirth Connect instance that are preconfigured to work with the <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> instances after this tutorial is complete.
+The channels are created and started.  You should see the following output on your terminal window which indicates that the all containers are operational and ready for the rest of the tutorial:
+
+``` bash Dockere Compose
+mirth-cli-2-1      | Importing channel: /opt/connect/channels/mirth2-to-file-from-rack2-http.xml
+mirth-cli-1-1      | Importing channel: /opt/connect/channels/mirth1-file-to-rack1-http.xml
+mirth-cli-1-1      | Connected to Mirth Connect server @ https://172.31.0.2:8443 (4.5.0)
+mirth-cli-1-1      | Executing statement: import "/opt/connect/channels/mirth1-file-to-rack1-http.xml"
+mirth-cli-2-1      | Connected to Mirth Connect server @ https://172.31.0.3:8443 (4.5.0)
+mirth-cli-2-1      | Executing statement: import "/opt/connect/channels/mirth2-to-file-from-rack2-http.xml"
+mirth-cli-2-1      | Channel 'HTTP to JSON File' imported successfully.
+mirth-cli-2-1      | Executing statement: deploy
+mirth-cli-2-1      | Deploying Channels
+mirth-cli-1-1      | Channel 'JSON File to HTTP' imported successfully.
+mirth-cli-1-1      | Executing statement: deploy
+mirth-cli-1-1      | Deploying Channels
+mirth-cli-2-1      | No Channels to Deploy
+mirth-cli-2-1      | Executing statement: channel enable *
+mirth-cli-2-1      | Executing statement: channel start *
+mirth-cli-1-1      | No Channels to Deploy
+mirth-cli-1-1      | Executing statement: channel enable *
+mirth-cli-2-1      | Disconnected from server.
+mirth-cli-1-1      | Executing statement: channel start *
+mirth-cli-1-1      | Disconnected from server.
+mirth-cli-2-1 exited with code 0
+mirth-cli-1-1 exited with code 0
+
+```
+
+#### CESR Files and Out-Of-Band-Introductions
+In order for <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> gateways to communicate with each other securely they need to be aware of each other's [key state](/essentials/overview) (the current set of signing keys to use for signature verification and encryption).
+  We accomplish this connection by exchanging each gateway's key event log in [CESR](https://trustoverip.github.io/tswg-cesr-specification/) encoded stream files in an Out-Of-Band-Introduction (OOBI).  These files are exported during the `rack install` command that created the Docker images and must be exported from each docker container now running a <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> gateway.
+
+To copy these <Tooltip tip="Composable Event Streaming Representation">CESR</Tooltip> files out of docker containers, use the following commands:
 
 ```bash Docker
 docker cp examples-rack-1-1:/opt/rack/data/Rack1-core.cesr ./rack-1.cesr
 docker cp examples-rack-2-1:/opt/rack/data/Rack2-core.cesr ./rack-2.cesr
 ```
+
+We will be using these <Tooltip tip="Composable Event Streaming Representation">CESR</Tooltip> files later in the tutorial.
 
 ## 2. Create local identifiers with Locksmith
 Use Salt `DQ7Hzp4faFdbesNx-_a1v`
