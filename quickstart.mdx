@@ -115,7 +115,7 @@ The first step is using Locksmith is to create and open a `Vault` that will hold
     </Step>
     <Step title="Open Vault">
         After creating the Vault you open it using the drawer icon <Icon icon="inbox"></Icon> in the upper right corner of the Locksmith window and selecting the Locksmith drawer:
-        <img alt="open-vault" src="/images/open-vault.png"></img>
+        <img alt="Open Vault" src="/images/open-vault.png"></img>
     </Step>
     <Step title="Create Identifier">
         Now, let's create your first Identifier. The <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> gateways were installing into the Docker images with predetermined cryptographic salts for both the <Tooltip tip="Administration User Interface">AUI</Tooltip> identifier as well as the identifier that is authorized to access the <Tooltip tip="Administration User Interface">AUI</Tooltip>.
@@ -154,7 +154,7 @@ To establish a secure connection to each gateway you have to load the <Tooltip t
     <Step title="Create Proxies">
         Proxies are the final step required to launch the <Tooltip tip="Administration User Interface">AUI</Tooltip> screens for each gateway.  Each proxy will sign and encrypt all communication from your web browser to the gateway and decrypt and verify all data retrieved from the remote gateway.
 
-        <img alt="open-vault" src="/images/proxies.png"></img>
+        <img alt="Proxies" src="/images/proxies.png"></img>
         Click on the **Add Proxy Redirect** button to create a proxy.  Select "admin" from the **Associated Local AID** dropdown to use the identifier created in [Step 2.](#2-create-local-identifiers-with-locksmith), and select Rack1 in the **Destination Remote AID** dropdown.
         The **Target URL** and **Target Port** should populate automatically.
         <img alt="Create Proxy" src="/images/create-proxy.png"></img>
@@ -165,17 +165,47 @@ To establish a secure connection to each gateway you have to load the <Tooltip t
     </Step>
     <Step title="Launch Proxies">
         To launch the <Tooltip tip="Administration User Interface">AUI</Tooltip> for Rack1, select the **Actions** menu for that row in the grid and click on the **Launch** menu.  The status will change from **<font color="red" weight="bold">Idle</font>** to **<font color="green" weight="bold">Running</font>**.
-        <img alt="open-vault" src="/images/launch-proxy.png"></img>
+        <img alt="Launch Proxies" src="/images/launch-proxy.png"></img>
     </Step>
     <Step title="Access RACK Gateways">
         You should now have two open browser windows, one for Rack1 and one for Rack2 showing the <Tooltip tip="Administration User Interface">AUI</Tooltip> for each gateway.
-        <img alt="open-vault" src="/images/gateways.png"></img>
+        <img alt="RACK Gateways" src="/images/gateways.png"></img>
     </Step>
 </Steps>
 
-
-
 ## 4. Configure Outbound Route
+We will use the gateway named **Rack1** as our Outbound Route.  The first pre-configured instance of Mirth, **Mirth1** has a channel created to load any files placed in a certain directory and send them to the IP address of **Rack1** at port 3333.
+In this step, we will create an Outbound Route on **Rack1** that listens on port 3333 and signs, encrypts and sends data to **Rack2**.
+
+<Steps>
+    <Step title="Create RACK Identifier">
+        Select the "Identifiers" item from the left menu:
+        <img alt="RACK Identifiers" src="/images/rack-identifiers.png"></img>
+        Click on "Add Identifier" and in the dialog, give the identifier an **Alias** of "Rack1" and set the **Number of Signing Keys**, **Number of Rotation Keys**, **Signing Threshold** and **Rotation Threshold** all to `1`:
+        <img alt="Create RACK Identifier" src="/images/rack-create-identifier.png"></img>
+        Click **Save** to create an Identifier that is local to this <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> gateway.
+
+    </Step>
+    <Step title="Create Outbound Routes">
+        Now we will define the Outbound Route to the **Rack2** gateway.  This is done from the **Outbound Routes** menu item on the left:
+
+        <img alt="Outbound Routes" src="/images/outbound-routes.png"></img>
+        Click on the **Add Outbound Route** button to create the route.
+
+        Give the Outbound Route an **Name** of "To Rack2** (to indicate the data's destination), leave the **Peer-to-Peer** radio button selected, select the "Rack1" Identifier you just created from the **Local Identifier to Secure the Connection**, leave the **Protocol** set to "HTTP" and set the **Local Port* to 3333.
+
+        <img alt="Create Outbound Route" src="/images/create-outbound-route.png"></img>
+        Click **Save** to create the Outbound Route to **Rack2**.
+
+    </Step>
+    <Step title="Export Introduction">
+        The two <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> gateways will be connected to each other using the same <Tooltip tip="Composable Event Streaming Representation">CESR</Tooltip> file approach we used to connect Locksmith to each gateway.
+        To establish this connection you will not export an introduction to the Identifier you created for this <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> gateway from the Outbound Route grid.
+        <Note>We export introductions from the route grids so they also contain gateway connection information that allows them to be discovered by other gateways </Note>
+        <img alt="Export Introduction" src="/images/outbound-export-introduction.png"></img>
+        Open the Actions menu for the Outbound Route you just created and select the Export Introduction menu item.  A new file will be saved on your computer named "Rack1-To Rack2.cesr".  We will use this file in the next step.
+    </Step>
+</Steps>
 
 ## 5. Configure Inbound Route
 Accept on Host: 172.31.0.5 on port 4444
