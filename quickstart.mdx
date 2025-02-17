@@ -192,7 +192,7 @@ In this step, we will create an Outbound Route on **Rack1** that listens on port
         <img alt="Outbound Routes" src="/images/outbound-routes.png"></img>
         Click on the **Add Outbound Route** button to create the route.
 
-        Give the Outbound Route an **Name** of "To Rack2** (to indicate the data's destination), leave the **Peer-to-Peer** radio button selected, select the "Rack1" Identifier you just created from the **Local Identifier to Secure the Connection**, leave the **Protocol** set to "HTTP" and set the **Local Port* to 3333.
+        Give the Outbound Route an **Name** of "To Rack2" (to indicate the data's destination), leave the **Peer-to-Peer** radio button selected, select the "Rack1" Identifier you just created from the **Local Identifier to Secure the Connection**, leave the **Protocol** set to "HTTP" and set the **Local Port* to 3333.
 
         <img alt="Create Outbound Route" src="/images/create-outbound-route.png"></img>
         Click **Save** to create the Outbound Route to **Rack2**.
@@ -208,13 +208,62 @@ In this step, we will create an Outbound Route on **Rack1** that listens on port
 </Steps>
 
 ## 5. Configure Inbound Route
-Accept on Host: 172.31.0.5 on port 4444
+**Rack2** now becomes out inbound <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> gateway.  The second pre-configured instance of Mirth, **Mirth2** has a channel created is listening on port 5555 for inbound HTTP JSON files that it will write to a local directory.
 
-IP Address / Host Name: 172.31.0.3 on port 5555
+In this step, we will create an Inbound Route on **Rack2** that listens on port 4444 for signed and encrypted data sent from **RACK2**.  No other data will be accepted into this instance of <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> and therefore the **Mirth2** instance of Mirth Connect.
+
+<Steps>
+    <Step title="Create RACK Identifier">
+        From the "Identifiers" screen on **Rack2**, click on "Add Identifier" and in the dialog, give the identifier an **Alias** of "Rack2" and set the **Number of Signing Keys**, **Number of Rotation Keys**, **Signing Threshold** and **Rotation Threshold** all to `1`:
+        <img alt="RACK Identifiers" src="/images/rack-create-inbound-identifier.png"></img>
+
+        Click **Save** to create an Identifier that is local to this <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> gateway.
+
+    </Step>
+    <Step title="Connect to Remote Gateway">
+        Because we exported an introduction from **Rack1** we are able to create a remote gateway on **Rack2** before creating the Inbound Route.
+
+        Select "Remote Gateways" from the menu on the left side of the **Rack2** <Tooltip tip="Administration User Interface">AUI</Tooltip>:
+        <img alt="Remote Gateways" src="/images/remote-gateways.png"></img>
+
+        Click on **Add Remote Gateway**, set the **Alias** to "Rack1" and select the "Rack1-to Rack2.cesr" file exported from [Step 4.](#4-configure-outbound-route) above.
+        <img alt="Create Remote Gateway" src="/images/create-remote-gateway.png"></img>
+
+        Click on **Save** to load the key state and connection information from **Rack1** into the **Rack2** gateway.
+
+        <Tip>**Remember**: Everything in <Tooltip tip="Key Event Receipt Infrastructure">KERI</Tooltip> is "End-to-End Verifiable".  Each gateway verifies all key events and their signatures before accepting the key state into their own database.</Tip>
+    </Step>
+    <Step title="Create Inbound Routes">
+        Now we will define the Inbound Route from the **Rack1** gateway.  This is done from the **Inbound Routes** menu item on the left:
+
+        <img alt="Inbound Routes" src="/images/inbound-routes.png"></img>
+        Click on the **Add Inbound Route** button to create the route.
+
+        Give the Inbound Route an **Name** of "From Rack1" (to indicate the data's origin).
+
+        In the **Route Type** section, leave the **Peer-to-Peer** radio button selected, select the "Rack1" Identifier you just imported from the **Accept from Remote Gateway**, select the "172.31.0.5" IP address and enter 4444 in ** Accept on Port**.
+
+        Leave the **Protocol** set to "HTTP" set destination **IP Address / Host Name** to "172.31.0.3" the **Port* to 5555.  That IP Address is the static IP address assigned to the **Mirth2** instance in the Docker compose file.  Also, the channel created in **Mirth2** is set to listen for incoming HTTP connections on port 5555.
+
+        <img alt="Create Inbound Route" src="/images/create-inbound-route.png"></img>
+        Click **Save** to create the Inbound Route from **Rack1**.
+
+    </Step>
+    <Step title="Export Introduction">
+        As we did with the Outbound Route on **Rack1** we must export the introduction to **Rack2**, but this time from the Inbound Route grid:
+        <img alt="Export Introduction" src="/images/inbound-export-introduction.png"></img>
+        Open the Actions menu for the Inbound Route you just created and select the Export Introduction menu item.  A new file will be saved on your computer named "Rack2-From Rack1.cesr".  We will use this file in the [next step](#6-launch-routing).
+    </Step>
+</Steps>
+
 ## 6. Launch Routing
+Coming soon...
 
 ## 7. Send Test Data
+Coming soon...
 
 ## 8. Verify Results
+Coming soon...
 
 ## 9. Next Steps
+Coming soon...
