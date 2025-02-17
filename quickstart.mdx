@@ -114,7 +114,7 @@ The first step is using Locksmith is to create and open a `Vault` that will hold
 
     </Step>
     <Step title="Open Vault">
-        After creating the Vault you open it using the icon drawer <Icon icon="drawer"></Icon> in the upper right corner of the Locksmith window and selecting the Locksmith drawer:
+        After creating the Vault you open it using the drawer icon <Icon icon="inbox"></Icon> in the upper right corner of the Locksmith window and selecting the Locksmith drawer:
         <img alt="open-vault" src="/images/open-vault.png"></img>
     </Step>
     <Step title="Create Identifier">
@@ -137,30 +137,41 @@ The first step is using Locksmith is to create and open a `Vault` that will hold
 </Steps>
 
 ## 3. Connect to RACK Gateways through Locksmith
-
+Your connection to the <Tooltip tip="Administration User Interface">AUI</Tooltip> for each <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> gateway is secured using the same <Tooltip tip="Key Event Receipt Infrastructure">KERI</Tooltip> and <Tooltip tip="Encrypt Sender then Sign Receiver">ESSR</Tooltip> technology at the heart of our gateways.
+To establish a secure connection to each gateway you have to load the <Tooltip tip="Composable Event Streaming Representation">CESR</Tooltip> files copied from the running Docker containers in [Step 1.](#1-launch-healthkeri-rack-and-mirth-connect).
 <Steps>
     <Step title="Create Remote Gateways">
-        After launching Locksmith for the first time you will be presented with a button labeled "Initialize new Vault".
+        Select the <Icon icon="envelope"></Icon> "Remote Identifiers" icon from the left menu
         <img alt="Remote Identifiers" src="/images/remote-identifiers.png"></img>
-        Select this button and create a new vault named `Locksmith`:
+        Click on "Add Remote Identifiers" and in the dialog, click the **File** radio button, add an **Alias** of "Rack1" and **Browse** for the "rack-1.cesr" file exported from the Docker container earlier:
         <img alt="Connect to Remote Identifier" src="/images/connect-remote-identifier.png"></img>
+
+        Repeat these steps to connect to the second gateway with an **Alias** of "Rack2 and the "rack-2.cesr" **File**.
+
+        When complete you should have 2 Remote Identifiers listed on the screen, Rack 1 with an AID of `EPIa-VqM9y2EUUMAJ0MAv5AEdDVvaOcFmIxKn5jzIgKk` and Rack2 with an AID of `EJ8Rx6lal6S7mlrhp6OuHkxAizP7N5ufzllu4YIbjjvV`.
 
     </Step>
     <Step title="Create Proxies">
-        After creating the Vault you open it using the icon drawer <Icon icon="drawer"></Icon> in the upper right corner of the Locksmith window and selecting the Locksmith drawer:
-        <img alt="open-vault" src="/images/open-vault.png"></img>
+        Proxies are the final step required to launch the <Tooltip tip="Administration User Interface">AUI</Tooltip> screens for each gateway.  Each proxy will sign and encrypt all communication from your web browser to the gateway and decrypt and verify all data retrieved from the remote gateway.
+
+        <img alt="open-vault" src="/images/proxies.png"></img>
+        Click on the **Add Proxy Redirect** button to create a proxy.  Select "admin" from the **Associated Local AID** dropdown to use the identifier created in [Step 2.](#2-create-local-identifiers-with-locksmith), and select Rack1 in the **Destination Remote AID** dropdown.
+        The **Target URL** and **Target Port** should populate automatically.
+        <img alt="Create Proxy" src="/images/create-proxy.png"></img>
+
+        Repeat these steps to create a proxy to the second gateway by selecting "Rack2" in the **Destination Remote AID** dropdown.
+
+        When complete you should not have 2 Proxies listed on the screen, one for Rack1 and one for Rack2, each using the same **Signing AID**.
     </Step>
     <Step title="Launch Proxies">
-        After creating the Vault you open it using the icon drawer <Icon icon="drawer"></Icon> in the upper right corner of the Locksmith window and selecting the Locksmith drawer:
-        <img alt="open-vault" src="/images/open-vault.png"></img>
+        To launch the <Tooltip tip="Administration User Interface">AUI</Tooltip> for Rack1, select the **Actions** menu for that row in the grid and click on the **Launch** menu.  The status will change from **<font color="red" weight="bold">Idle</font>** to **<font color="green" weight="bold">Running</font>**.
+        <img alt="open-vault" src="/images/launch-proxy.png"></img>
     </Step>
     <Step title="Access RACK Gateways">
-        After creating the Vault you open it using the icon drawer <Icon icon="drawer"></Icon> in the upper right corner of the Locksmith window and selecting the Locksmith drawer:
-        <img alt="open-vault" src="/images/open-vault.png"></img>
+        You should now have two open browser windows, one for Rack1 and one for Rack2 showing the <Tooltip tip="Administration User Interface">AUI</Tooltip> for each gateway.
+        <img alt="open-vault" src="/images/gateways.png"></img>
     </Step>
 </Steps>
-RACK1: `EPIa-VqM9y2EUUMAJ0MAv5AEdDVvaOcFmIxKn5jzIgKk`
-RACK2: `EJ8Rx6lal6S7mlrhp6OuHkxAizP7N5ufzllu4YIbjjvV`
 
 
 
