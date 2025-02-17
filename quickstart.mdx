@@ -84,6 +84,8 @@ mirth-cli-1-1 exited with code 0
 
 ```
 
+<Warning>The gateways launched in this tutorial were installing using the `--insecure` option.  They should **only** be used for local testing and experimentation.</Warning>
+
 #### CESR Files and Out-Of-Band-Introductions
 In order for <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> gateways to communicate with each other securely they need to be aware of each other's [key state](/essentials/overview) (the current set of signing keys to use for signature verification and encryption).
   We accomplish this connection by exchanging each gateway's key event log in [CESR](https://trustoverip.github.io/tswg-cesr-specification/) encoded stream files in an Out-Of-Band-Introduction (OOBI).  These files are exported during the `rack install` command that created the Docker images and must be exported from each docker container now running a <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> gateway.
@@ -98,7 +100,40 @@ docker cp examples-rack-2-1:/opt/rack/data/Rack2-core.cesr ./rack-2.cesr
 We will be using these <Tooltip tip="Composable Event Streaming Representation">CESR</Tooltip> files later in the tutorial.
 
 ## 2. Create local identifiers with Locksmith
-Use Salt `DQ7Hzp4faFdbesNx-_a1v`
+Our local <Tooltip tip="Key Event Receipt Infrastructure">KERI</Tooltip> wallet and secure <Tooltip tip="Encrypt Sender then Sign Receiver">ESSR</Tooltip> proxy is called [Locksmith](http://localhost:3000/software#download-and-install).
+You will use `Locksmith` for the rest of this tutorial to establish secure connections to the <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> gateways Administration User Interface (AUI).
+
+The first step is using Locksmith is to create and open a `Vault` that will hold the Identifiers used for the remainder of this tutorial.
+<Steps>
+    <Step title="Create Vault">
+        After launching Locksmith for the first time you will be presented with a button labeled "Initialize new Vault".
+        <img alt="Initialize New Vault" src="/images/initialize-new-vault.png"></img>
+        Select this button and create a new vault named `Locksmith`:
+        <img alt="Create Vault Dialog" src="/images/create-vault-dialog.png"></img>
+
+    </Step>
+    <Step title="Open Vault">
+        After creating the Vault you open it using the icon drawer <Icon icon="drawer"></Icon> in the upper right corner of the Locksmith window and selecting the Locksmith drawer:
+        <img alt="open-vault" src="/images/open-vault.png"></img>
+    </Step>
+    <Step title="Create Identifier">
+        Now, let's create your first Identifier. The <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> gateways were installing into the Docker images with predetermined cryptographic salts for both the <Tooltip tip="Administration User Interface">AUI</Tooltip> identifier as well as the identifier that is authorized to access the <Tooltip tip="Administration User Interface">AUI</Tooltip>.
+        To connect to the <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> gateways, you must create a local identifier with the same salt that each gateway was initialized with.
+
+        That salt is `DQ7Hzp4faFdbesNx-_a1v`.
+
+        From the Identifiers screen, select the "Add Identifier" button to create your first identifier:
+        <img alt="Identifiers" src="/images/identifiers.png"></img>
+
+        Set the name for the new Identifier as "admin", click on "Advanced Configuration" and copy and paste the salt listed above into the Salt field.  Click on the eye ball next to the Salt field to see that you pasted the correct value.
+        <img alt="Create Identifier" src="/images/add-identifier.png"></img>
+
+        After you click "Add", the new identifier appear in the grid with the name "admin" and the AID of `EK4iFDRWMPH2mJ_VSJZt5VgCTg7wupzKX5nipreSOBuR`.
+
+        <Note>It is important to use the name "admin" for this identifier since the name becomes part of the entropy used to create the first set of key pairs.</Note>
+
+    </Step>
+</Steps>
 
 ## 3. Connect to RACK Gateways through Locksmith
 
