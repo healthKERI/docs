@@ -288,14 +288,87 @@ We will now complete the connection between the two gateways by loading the <Too
     </Step>
 </Steps>
 
-
 <Check>You have now completed the configuration of two <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> gateways and can exchange secure data!</Check>
 
 ## 7. Send Test Data
-Coming soon...
+As mentioned previously, the Docker compose file launched in [Step 1.](#1-launch-healthkeri-rack-and-mirth-connect) created 2 instances of Mirth Connect
+and configured them with Channels that would send data through our newly configured <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> gateways.
 
+**Mirth1** has a channel that is looking for any JSON files to be copied into its local `/opt/connect/data` directory that was mapped to the local `<rack-docker dir>/examples/data/volumes/mirth1` directory by Docker compose.
+When files show up in that directory, **Mirth1** will send those files via HTTP to the IP address and Port that **Rack1** is now listening on.
+
+To facilitate testing, we have provided 2 directories (`<rack-docker dir>/examples/data/fhir-dataset` and `<rack-docker dir>/examples/data/fhir-dataset-large`) of sample FHIR data files that can be used to test the new secure connection.  We also included a Shell script that will copy the files into the correct local directory to be picked up buy **Mirth1**.
+
+To send test files through the secure connection use the following command from the `<rack-docker dir>/examples` directory:
+
+```bash Load Test
+./load-test.sh fhir-dataset 50
+```
+
+This command will copy 50 random files from the `examples/data/fhir-dataset` directory to the `examples/data/volumes/mirth1` directory which will cause **Mirth1** to pick up those files and send them to **Rack1**
+
+**Rack1** will, in turn, sign and encrypt every file (the actual entire HTTP transaction, as a matter of fact) and send the now secured data to **Rack2** which will decrypt the data and recreate the HTTP transaction to send to **Mirth2**
+
+Logging was left at the **INFO** level so you will see a series of log statements from **Rack1** and **Rack2** indicating the successful flow of data, such as the following:
+
+```bash Rack
+rack-1-1  | 2025-02-17 18:33:12 [rack] INFO   Behavior for /fwd missing or does not have verify for said=ENAjc5b0gQTJo_9LEk74ltUhiDVSsiqROsPXNZpZDses
+rack-1-1  | 2025-02-17 18:33:12 [rack] INFO   Message from EAVyvgXvjcYxBZYDtbxpEaX4F6RLuyhrw_aagZaq0iXt to EPTKEkkVw9XuCsMQ4rdqIyK8bQJQyGHWlAaWg09LuGo7
+rack-1-1  | 2025-02-17 18:33:12 [rack] INFO   tcp client cue received for evt=ENAjc5b0gQTJo_9LEk74ltUhiDVSsiqROsPXNZpZDses
+rack-1-1  | 2025-02-17 18:33:12 [rack] INFO   tcp -> [EGVh6SBUMqWEsy5FSm2H4anB8OI4HdF70rtQxru_m6Hx]/[EMfZQm1_0YS6chhM6rV1jhC7Dwh5wBdQc0TpnpYaW6Er] -> dessr: msg recv.
+rack-1-1  | 2025-02-17 18:33:12 [rack] INFO   tcp -> [EGVh6SBUMqWEsy5FSm2H4anB8OI4HdF70rtQxru_m6Hx]/[EMfZQm1_0YS6chhM6rV1jhC7Dwh5wBdQc0TpnpYaW6Er] -> dessr: msg sent.
+rack-1-1  | 2025-02-17 18:33:12 [rack] INFO   Behavior for /essr/req missing or does not have verify for said=ED7e1Xs8MijyMnh_sF2TefIRQYwePUOFRKF4W4enacCm
+rack-1-1  | 2025-02-17 18:33:12 [rack] INFO   dessr -> [EGVh6SBUMqWEsy5FSm2H4anB8OI4HdF70rtQxru_m6Hx]/[EMfZQm1_0YS6chhM6rV1jhC7Dwh5wBdQc0TpnpYaW6Er] -> httpsrv: msg recv.
+rack-1-1  | 2025-02-17 18:33:12 [rack] INFO   dessr -> [EGVh6SBUMqWEsy5FSm2H4anB8OI4HdF70rtQxru_m6Hx]/[EMfZQm1_0YS6chhM6rV1jhC7Dwh5wBdQc0TpnpYaW6Er] -> httpsrv: msg sent.
+rack-1-1  | 2025-02-17 18:33:12 [rack] INFO   Behavior for /http/rep missing or does not have verify for said=EHfg2cuhkXV0F3G8MoHi0CjBvyHXCjlZ_wHEsRBc-XFc
+rack-1-1  | 2025-02-17 18:33:12 [rack] INFO   httpsrv sending 0 bytes for EAG3nLVV1uTw6zErIY2tYrw3qtMw1kj7g4N78C655dkd
+rack-2-1  | 2025-02-17 18:33:12 [rack] INFO   Behavior for /fwd missing or does not have verify for said=ECsNTwvaF5GccfgyF3jOkJK52mBHX2xGj8M0S97hlUMO
+rack-2-1  | 2025-02-17 18:33:12 [rack] INFO   Message from EK4iFDRWMPH2mJ_VSJZt5VgCTg7wupzKX5nipreSOBuR to EJ8Rx6lal6S7mlrhp6OuHkxAizP7N5ufzllu4YIbjjvV
+rack-2-1  | 2025-02-17 18:33:12 [rack] INFO   exn with said=ECsNTwvaF5GccfgyF3jOkJK52mBHX2xGj8M0S97hlUMO saved
+rack-2-1  | 2025-02-17 18:33:12 [rack] INFO   Server core: sent response protocol messages: 487
+rack-2-1  | 2025-02-17 18:33:12 [rack] INFO   tcpsrv -> [EK4iFDRWMPH2mJ_VSJZt5VgCTg7wupzKX5nipreSOBuR]/[EJ8Rx6lal6S7mlrhp6OuHkxAizP7N5ufzllu4YIbjjvV] -> dessr: msg recv.
+rack-2-1  | 2025-02-17 18:33:12 [rack] INFO   tcpsrv -> [EK4iFDRWMPH2mJ_VSJZt5VgCTg7wupzKX5nipreSOBuR]/[EJ8Rx6lal6S7mlrhp6OuHkxAizP7N5ufzllu4YIbjjvV] -> dessr: msg sent.
+rack-2-1  | 2025-02-17 18:33:12 [rack] INFO   Behavior for /essr/req missing or does not have verify for said=EPCBtqy5MsjRMV7-55Qv3MNxOgyhrMrH25C9yWRHIAaf
+rack-2-1  | 2025-02-17 18:33:12 [rack] INFO   dessr -> [EK4iFDRWMPH2mJ_VSJZt5VgCTg7wupzKX5nipreSOBuR]/[EJ8Rx6lal6S7mlrhp6OuHkxAizP7N5ufzllu4YIbjjvV] -> httpcall: msg recv.
+rack-2-1  | 2025-02-17 18:33:12 [rack] INFO   dessr -> [EK4iFDRWMPH2mJ_VSJZt5VgCTg7wupzKX5nipreSOBuR]/[EJ8Rx6lal6S7mlrhp6OuHkxAizP7N5ufzllu4YIbjjvV] -> httpcall: msg sent.
+rack-2-1  | 2025-02-17 18:33:12 [rack] INFO   Behavior for /ping missing or does not have verify for said=EEKa6p_xmPN8Hzeerls_NoDufr5cdNH2NkyAnlw44twL
+rack-2-1  | 2025-02-17 18:33:12 [rack] INFO   Behavior for /ping missing or does not have handle for said=EEKa6p_xmPN8Hzeerls_NoDufr5cdNH2NkyAnlw44twL
+```
+<Icon icon="hand-horns" syle="emoji"></Icon> You have sent fully secure data in **Zero-Trust** between two Mirth Connect integrations instances without SSL!
 ## 8. Verify Results
-Coming soon...
+
+The **Mirth2** instance is configured to write the files it receives from **Rack1** to its `/opt/connect/data` directory which was mapped to `examples/data/volumes/mirth2` by Docker compose.  To verify that the data flowed successfully through all 4 containers, you can check for new files that will now be in `examples/data/volumes/mirth2`:
+```bash examples/data/volumes/mirth2
+ls -a ./examples/data/volumes/mirth2
+data/volumes/mirth2/1739817190096.dat-1739817190096-signed.json data/volumes/mirth2/1739817191043.dat-1739817191043-signed.json data/volumes/mirth2/1739817191876.dat-1739817191876-signed.json
+data/volumes/mirth2/1739817190166.dat-1739817190166-signed.json data/volumes/mirth2/1739817191091.dat-1739817191091-signed.json data/volumes/mirth2/1739817191925.dat-1739817191925-signed.json
+data/volumes/mirth2/1739817190226.dat-1739817190226-signed.json data/volumes/mirth2/1739817191136.dat-1739817191136-signed.json data/volumes/mirth2/1739817191968.dat-1739817191968-signed.json
+data/volumes/mirth2/1739817190266.dat-1739817190266-signed.json data/volumes/mirth2/1739817191175.dat-1739817191175-signed.json data/volumes/mirth2/1739817192010.dat-1739817192010-signed.json
+data/volumes/mirth2/1739817190315.dat-1739817190315-signed.json data/volumes/mirth2/1739817191225.dat-1739817191225-signed.json data/volumes/mirth2/1739817192057.dat-1739817192057-signed.json
+data/volumes/mirth2/1739817190370.dat-1739817190370-signed.json data/volumes/mirth2/1739817191281.dat-1739817191281-signed.json data/volumes/mirth2/1739817192103.dat-1739817192103-signed.json
+data/volumes/mirth2/1739817190416.dat-1739817190416-signed.json data/volumes/mirth2/1739817191338.dat-1739817191338-signed.json data/volumes/mirth2/1739817192151.dat-1739817192151-signed.json
+data/volumes/mirth2/1739817190469.dat-1739817190469-signed.json data/volumes/mirth2/1739817191388.dat-1739817191388-signed.json data/volumes/mirth2/1739817192194.dat-1739817192194-signed.json
+data/volumes/mirth2/1739817190528.dat-1739817190528-signed.json data/volumes/mirth2/1739817191440.dat-1739817191440-signed.json data/volumes/mirth2/1739817192236.dat-1739817192236-signed.json
+data/volumes/mirth2/1739817190584.dat-1739817190584-signed.json data/volumes/mirth2/1739817191488.dat-1739817191488-signed.json data/volumes/mirth2/1739817192276.dat-1739817192276-signed.json
+data/volumes/mirth2/1739817190640.dat-1739817190640-signed.json data/volumes/mirth2/1739817191535.dat-1739817191535-signed.json data/volumes/mirth2/1739817192318.dat-1739817192318-signed.json
+data/volumes/mirth2/1739817190697.dat-1739817190697-signed.json data/volumes/mirth2/1739817191588.dat-1739817191588-signed.json data/volumes/mirth2/1739817192367.dat-1739817192367-signed.json
+data/volumes/mirth2/1739817190755.dat-1739817190755-signed.json data/volumes/mirth2/1739817191636.dat-1739817191636-signed.json data/volumes/mirth2/1739817192416.dat-1739817192416-signed.json
+data/volumes/mirth2/1739817190826.dat-1739817190826-signed.json data/volumes/mirth2/1739817191682.dat-1739817191682-signed.json data/volumes/mirth2/1739817192471.dat-1739817192471-signed.json
+data/volumes/mirth2/1739817190880.dat-1739817190880-signed.json data/volumes/mirth2/1739817191726.dat-1739817191726-signed.json data/volumes/mirth2/1739817192523.dat-1739817192523-signed.json
+data/volumes/mirth2/1739817190935.dat-1739817190935-signed.json data/volumes/mirth2/1739817191769.dat-1739817191769-signed.json data/volumes/mirth2/1739817192562.dat-1739817192562-signed.json
+data/volumes/mirth2/1739817190990.dat-1739817190990-signed.json data/volumes/mirth2/1739817191820.dat-1739817191820-signed.json```
+```
+
+You can also diff those files to see that the full FHIR records have been transferred completely.
+
+If you would like to verify that the data was sent between the <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> gateways signed and encrypted we recommend add a [Wireshark](https://hub.docker.com/r/linuxserver/wireshark) container to the `mirth-connect-rack-compose-sample.yaml` Docker compose file and analyze the network traffic between the `172.31.0.4` and `172.31.0.5` IP addresses.
+
 
 ## 9. Next Steps
-Coming soon...
+Now that you've connected two <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> gateways directly via a Peer-To-Peer connection you should see one main limitation with this configuration.
+
+At least one gateway will have to listen for incoming connections on a TCP port.  While this may be fine for local testing it can be challenging to test gateways on the Open Internet.
+
+In our next tutorial, we will be demonstrating how to connect two <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> gateways using [healthKERI](https://healthKERI.com) Cloud Routers to remove this limitation.
+
+Please stay tuned...
