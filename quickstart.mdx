@@ -208,7 +208,7 @@ In this step, we will create an Outbound Route on **Rack1** that listens on port
 </Steps>
 
 ## 5. Configure Inbound Route
-**Rack2** now becomes out inbound <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> gateway.  The second pre-configured instance of Mirth, **Mirth2** has a channel created is listening on port 5555 for inbound HTTP JSON files that it will write to a local directory.
+**Rack2** now becomes our inbound <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> gateway.  The second pre-configured instance of Mirth, **Mirth2** has a channel created is listening on port 5555 for inbound HTTP JSON files that it will write to a local directory.
 
 In this step, we will create an Inbound Route on **Rack2** that listens on port 4444 for signed and encrypted data sent from **RACK2**.  No other data will be accepted into this instance of <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> and therefore the **Mirth2** instance of Mirth Connect.
 
@@ -257,7 +257,39 @@ In this step, we will create an Inbound Route on **Rack2** that listens on port 
 </Steps>
 
 ## 6. Launch Routing
-Coming soon...
+We will now complete the connection between the two gateways by loading the <Tooltip tip="Composable Event Streaming Representation">CESR</Tooltip> file from **Rack2** into **Rack1** and updating the Outbound Route we created in [Step 4.](#4-configure-outbound-route).
+
+<Steps>
+    <Step title="Complete Gateway Connections">
+        Back on the **Rack1** in the **Remote Gateways** section, click on **Add Remote Gateway**, set an **Alias** of "Rack2" and select the "Rack2-From Rack1.cesr" file create in the last step:
+        <img alt="RACK Identifiers" src="/images/rack2-create-remote.png"></img>
+
+        Click on **Save** to load the key state and connection information from **Rack2** into the **Rack1** gateway.
+
+    </Step>
+    <Step title="Edit Outbound Route">
+        Because we created the Outbound Route first we were not able to select the destination Remote Gateway.  Navigate to the **Outbound Routes** section of **Rack1*, select **Edit** from the **Actions** menu of the Outbound Route and update **Send to Remote Gateway** to now point to "Rack2"
+        <img alt="Edit Outbound Route" src="/images/edit-outbound-route.png"></img>
+
+        Click **Save** to complete the route configuration for both gateways.
+    </Step>
+    <Step title="Launch Routes">
+        Since you are now on the Outbound Routes grid of **Rack1**, you can launch this route by selecting **Launch** from the **Actions** menu of the Outbound Route named "To Rack2":
+
+        <img alt="Create Remote Gateway" src="/images/launch-outbound.png"></img>
+
+        Perform the same operation on the inbound route in the **Inbound Routes** on **Rack2**
+        <img alt="Create Remote Gateway" src="/images/launch-inbound.png"></img>
+
+        Both gateways are now launched as indicated by their status changing from **<font color="red" weight="bold">Idle</font>** to **<font color="green" weight="bold">Running</font>**.
+
+        <Note>After one minute, the **Last Ping** value in each route will be updated with a timestamp indicating the gateways are now connected and able to exchange secure data.</Note>
+
+    </Step>
+</Steps>
+
+
+<Check>You have now completed the configuration of two <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> gateways and can exchange secure data!</Check>
 
 ## 7. Send Test Data
 Coming soon...
