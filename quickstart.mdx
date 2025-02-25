@@ -297,7 +297,7 @@ and configured them with Channels that would send data through our newly configu
 **Mirth1** has a channel that is looking for any JSON files to be copied into its local `/opt/connect/data` directory that was mapped to the local `<rack-docker dir>/examples/data/volumes/mirth1` directory by Docker compose.
 When files show up in that directory, **Mirth1** will send those files via HTTP to the IP address and Port that **Rack1** is now listening on.
 
-To facilitate testing, we have provided 2 directories (`<rack-docker dir>/examples/data/fhir-dataset` and `<rack-docker dir>/examples/data/fhir-dataset-large`) of sample FHIR data files that can be used to test the new secure connection.  We also included a Shell script that will copy the files into the correct local directory to be picked up buy **Mirth1**.
+To facilitate testing, we have provided 2 directories (`<rack-docker dir>/examples/data/fhir-dataset` and `<rack-docker dir>/examples/data/fhir-dataset-large`) of sample FHIR data files that can be used to test the new secure connection.  We also included a Shell script that will copy the files into the correct local directory to be picked up by **Mirth1**.
 
 To send test files through the secure connection use the following command from the `<rack-docker dir>/examples` directory:
 
@@ -371,4 +371,4 @@ At least one gateway will have to listen for incoming connections on a TCP port.
 
 In our next tutorial, we will be demonstrating how to connect two <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> gateways using [healthKERI](https://healthKERI.com) Cloud Routers to remove this limitation.
 
-Please stay tuned...
+Stay tuned for our next walkthrough.  For questions or inquiries, contact [info@healthkeri.com](mailto:info@healthkeri.com).
