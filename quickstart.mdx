@@ -55,8 +55,8 @@ In the `rack-docker` repository there is a Docker compose file called `mirth-con
 docker compose -f ./examples/mirth-connect-rack-compose-sample.yaml up
 ```
 
-In addition to the two instances of <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> and Mirth, this compose file also creates two temporary containers that create one [channel](https://docs.nextgen.com/bundle/Mirth_User_Guide_4_5_0/page/connect/connect/topics/c_Channel_Components_connect_ug.html) on each Mirth Connect instance that are preconfigured to work with the <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> instances after this tutorial is complete.
-The channels are created and started.  You should see the following output on your terminal window which indicates that the all containers are operational and ready for the rest of the tutorial:
+In addition to the two instances of <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> and Mirth, this compose file also creates two temporary containers that create one [channel](https://docs.nextgen.com/bundle/Mirth_User_Guide_4_5_0/page/connect/connect/topics/c_Channel_Components_connect_ug.html) on each Mirth Connect instance that are preconfigured to work with the <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> instances once this tutorial is complete.
+After running the `docker compose` command above, the channels are created and started. The following output on your terminal window indicates that the all containers are operational and that you are ready to continue the tutorial:
 
 ``` bash Dockere Compose
 mirth-cli-2-1      | Importing channel: /opt/connect/channels/mirth2-to-file-from-rack2-http.xml
@@ -101,35 +101,35 @@ We will be using these <Tooltip tip="Composable Event Streaming Representation">
 
 ## 2. Create local identifiers with Locksmith
 Our local <Tooltip tip="Key Event Receipt Infrastructure">KERI</Tooltip> wallet and secure <Tooltip tip="Encrypt Sender then Sign Receiver">ESSR</Tooltip> proxy is called [Locksmith](http://localhost:3000/software#download-and-install).
-You will use `Locksmith` for the rest of this tutorial to establish secure connections to the <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> gateways Administration User Interface (AUI).
+You will use **Locksmith** for the rest of this tutorial to establish secure connections to the <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> gateways Administration User Interface (AUI).
 
-The first step is using Locksmith is to create and open a `Vault` that will hold the Identifiers used for the remainder of this tutorial.
+The first step is using Locksmith is to create and open a **Vault** that will hold the Identifiers used for the remainder of this tutorial.
 
 <Steps>
     <Step title="Create Vault">
-        After launching Locksmith for the first time you will be presented with a button labeled "Initialize new Vault".
+        After launching **Locksmith** for the first time, you will be presented with the Vaults menu, on top of which you will find the **Initialize new vault** button.
         <img alt="Initialize New Vault" src="/images/initialize-new-vault.png"></img>
-        Select this button and create a new vault named `Locksmith`:
+        Select this button and create a new vault named "Locksmith":
         <img alt="Create Vault Dialog" src="/images/create-vault-dialog.png"></img>
 
     </Step>
     <Step title="Open Vault">
-        After creating the Vault you open it using the drawer icon <Icon icon="inbox"></Icon> in the upper right corner of the Locksmith window and selecting the Locksmith drawer:
+        After creating the Vault, you open it by clicking the drawer icon <Icon icon="inbox"></Icon> in the upper right corner of the Locksmith window and selecting the newly created vault:
         <img alt="Open Vault" src="/images/open-vault.png"></img>
     </Step>
     <Step title="Create Identifier">
-        Now, let's create your first Identifier. The <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> gateways were installing into the Docker images with predetermined cryptographic salts for both the <Tooltip tip="Administration User Interface">AUI</Tooltip> identifier as well as the identifier that is authorized to access the <Tooltip tip="Administration User Interface">AUI</Tooltip>.
+        Now, let's create your first Identifier. The <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> gateways were installed into the Docker images with predetermined cryptographic salts for both the <Tooltip tip="Administration User Interface">AUI</Tooltip> identifier as well as the identifier that is authorized to access the <Tooltip tip="Administration User Interface">AUI</Tooltip>.
         To connect to the <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> gateways, you must create a local identifier with the same salt that each gateway was initialized with.
 
         That salt is `DQ7Hzp4faFdbesNx-_a1v`.
 
-        From the Identifiers screen, select the "Add Identifier" button to create your first identifier:
+        From the Identifiers screen, select the **Add Identifier** button to create your first identifier:
         <img alt="Identifiers" src="/images/identifiers.png"></img>
 
-        Set the name for the new Identifier as "admin", click on "Advanced Configuration" and copy and paste the salt listed above into the Salt field.  Click on the eye ball next to the Salt field to see that you pasted the correct value.
+        Set the name for the new Identifier as "admin", then click on **Advanced Configuration** and copy and paste the salt listed above into the **Salt** field.  Click on the eye ball icon in the **Salt** field to confirm that you have pasted the correct value.
         <img alt="Create Identifier" src="/images/add-identifier.png"></img>
 
-        After you click "Add", the new identifier appear in the grid with the name "admin" and the AID of `EK4iFDRWMPH2mJ_VSJZt5VgCTg7wupzKX5nipreSOBuR`.
+        After you click **Add**, the new identifier appears in the grid with the name "admin" and the AID of `EK4iFDRWMPH2mJ_VSJZt5VgCTg7wupzKX5nipreSOBuR`.
 
         <Note>It is important to use the name "admin" for this identifier since the name becomes part of the entropy used to create the first set of key pairs.</Note>
 
@@ -138,92 +138,107 @@ The first step is using Locksmith is to create and open a `Vault` that will hold
 
 ## 3. Connect to RACK Gateways through Locksmith
 Your connection to the <Tooltip tip="Administration User Interface">AUI</Tooltip> for each <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> gateway is secured using the same <Tooltip tip="Key Event Receipt Infrastructure">KERI</Tooltip> and <Tooltip tip="Encrypt Sender then Sign Receiver">ESSR</Tooltip> technology at the heart of our gateways.
-To establish a secure connection to each gateway you have to load the <Tooltip tip="Composable Event Streaming Representation">CESR</Tooltip> files copied from the running Docker containers in [Step 1.](#1-launch-healthkeri-rack-and-mirth-connect).
+To establish a secure connection to each gateway you must load the <Tooltip tip="Composable Event Streaming Representation">CESR</Tooltip> files copied from the running Docker containers in [Step 1](#1-launch-healthkeri-rack-and-mirth-connect).
 <Steps>
     <Step title="Create Remote Gateways">
-        Select the <Icon icon="envelope"></Icon> "Remote Identifiers" icon from the left menu
+        Select <Icon icon="envelope"></Icon> **Remote Identifiers** from the menu on the left
         <img alt="Remote Identifiers" src="/images/remote-identifiers.png"></img>
-        Click on "Add Remote Identifiers" and in the dialog, click the **File** radio button, add an **Alias** of "Rack1" and **Browse** for the "rack-1.cesr" file exported from the Docker container earlier:
+        Click on **Add Remote Identifiers**. In the dialog that appears, set the **Alias** to "Rack1", then click the **File** radio button and **Browse** for the "rack-1.cesr" file exported from the Docker container earlier:
         <img alt="Connect to Remote Identifier" src="/images/connect-remote-identifier.png"></img>
 
-        Repeat these steps to connect to the second gateway with an **Alias** of "Rack2 and the "rack-2.cesr" **File**.
+        Repeat these steps to connect to the second gateway with an **Alias** of "Rack2 and the "rack-2.cesr" file.
 
-        When complete you should have 2 Remote Identifiers listed on the screen, Rack 1 with an AID of `EPIa-VqM9y2EUUMAJ0MAv5AEdDVvaOcFmIxKn5jzIgKk` and Rack2 with an AID of `EJ8Rx6lal6S7mlrhp6OuHkxAizP7N5ufzllu4YIbjjvV`.
+        Once complete, you should have the following 2 Remote Identifiers listed on the screen:
+        - Rack1 with an AID of `EPIa-VqM9y2EUUMAJ0MAv5AEdDVvaOcFmIxKn5jzIgKk`
+        - Rack2 with an AID of `EJ8Rx6lal6S7mlrhp6OuHkxAizP7N5ufzllu4YIbjjvV`.
 
     </Step>
     <Step title="Create Proxies">
         Proxies are the final step required to launch the <Tooltip tip="Administration User Interface">AUI</Tooltip> screens for each gateway.  Each proxy will sign and encrypt all communication from your web browser to the gateway and decrypt and verify all data retrieved from the remote gateway.
 
         <img alt="Proxies" src="/images/proxies.png"></img>
-        Click on the **Add Proxy Redirect** button to create a proxy.  Select "admin" from the **Associated Local AID** dropdown to use the identifier created in [Step 2.](#2-create-local-identifiers-with-locksmith), and select Rack1 in the **Destination Remote AID** dropdown.
-        The **Target URL** and **Target Port** should populate automatically.
+        Select **Proxy** from the menu on the left, then click the **Add Proxy Redirect** button to create a proxy.  Select "admin" from the **Associated Local AID** dropdown to use the identifier created in [Step 2](#2-create-local-identifiers-with-locksmith), then select Rack1 in the **Destination Remote AID** dropdown.
+        The **Target URL** and **Target Port** fields should populate automatically.
         <img alt="Create Proxy" src="/images/create-proxy.png"></img>
 
-        Repeat these steps to create a proxy to the second gateway by selecting "Rack2" in the **Destination Remote AID** dropdown.
+        Repeat these steps to create a proxy to the second gateway by selecting "Rack2" from the **Destination Remote AID** dropdown.
 
-        When complete you should not have 2 Proxies listed on the screen, one for Rack1 and one for Rack2, each using the same **Signing AID**.
+        Once complete, you should have 2 Proxies listed on the screen with **Destination AIDs** Rack1 and Rack2. Both proxies should have the same **Signing AID**.
     </Step>
     <Step title="Launch Proxies">
-        To launch the <Tooltip tip="Administration User Interface">AUI</Tooltip> for Rack1, select the **Actions** menu for that row in the grid and click on the **Launch** menu.  The status will change from **<font color="red" weight="bold">Idle</font>** to **<font color="green" weight="bold">Running</font>**.
+        To launch the <Tooltip tip="Administration User Interface">AUI</Tooltip> for Rack1, select the **Actions** menu for its row in the grid and click on the **Launch** button.  The status will change from **<font color="red" weight="bold">Idle</font>** to **<font color="green" weight="bold">Running</font>**.
+        Repeat this step to launch the <Tooltip tip="Administration User Interface">AUI</Tooltip> for Rack2.
         <img alt="Launch Proxies" src="/images/launch-proxy.png"></img>
     </Step>
     <Step title="Access RACK Gateways">
-        You should now have two open browser windows, one for Rack1 and one for Rack2 showing the <Tooltip tip="Administration User Interface">AUI</Tooltip> for each gateway.
+        Launching the proxies will open two browser windows, one for each <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> instance. The browsers will display the <Tooltip tip="Administration User Interface">AUI</Tooltip> for each gateway.
         <img alt="RACK Gateways" src="/images/gateways.png"></img>
     </Step>
 </Steps>
 
 ## 4. Configure Outbound Route
-We will use the gateway named **Rack1** as our Outbound Route.  The first pre-configured instance of Mirth, **Mirth1** has a channel created to load any files placed in a certain directory and send them to the IP address of **Rack1** at port 3333.
-In this step, we will create an Outbound Route on **Rack1** that listens on port 3333 and signs, encrypts and sends data to **Rack2**.
+We will use the gateway named **Rack1** as our Outbound Route.  The first pre-configured instance of Mirth, **Mirth1**, has a channel created to load any files placed in a certain directory and send them to the IP address of **Rack1** at port 3333.
+We will now create an Outbound Route on **Rack1** that listens on port 3333 and signs, encrypts, and sends data to **Rack2**.
 
 <Steps>
     <Step title="Create RACK Identifier">
-        Select the "Identifiers" item from the left menu:
+        Select **Identifiers** from the menu on the left of the **Rack1** <Tooltip tip="Administration User Interface">AUI</Tooltip>:
         <img alt="RACK Identifiers" src="/images/rack-identifiers.png"></img>
-        Click on "Add Identifier" and in the dialog, give the identifier an **Alias** of "Rack1" and set the **Number of Signing Keys**, **Number of Rotation Keys**, **Signing Threshold** and **Rotation Threshold** all to `1`:
+        Click on **Add Identifier**. In the dialog that appears, give the identifier an **Alias** of "Rack1" and set the **Number of Signing Keys**, **Number of Rotation Keys**, **Signing Threshold** and **Rotation Threshold** to `1`:
         <img alt="Create RACK Identifier" src="/images/rack-create-identifier.png"></img>
         Click **Save** to create an Identifier that is local to this <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> gateway.
 
     </Step>
     <Step title="Create Outbound Routes">
-        Now we will define the Outbound Route to the **Rack2** gateway.  This is done from the **Outbound Routes** menu item on the left:
+        Now we will define the Outbound Route to the **Rack2** gateway.  First select **Outbound Routes** from the menu on the left:
 
         <img alt="Outbound Routes" src="/images/outbound-routes.png"></img>
         Click on the **Add Outbound Route** button to create the route.
 
-        Give the Outbound Route an **Name** of "To Rack2" (to indicate the data's destination), leave the **Peer-to-Peer** radio button selected, select the "Rack1" Identifier you just created from the **Local Identifier to Secure the Connection**, leave the **Protocol** set to "HTTP" and set the **Local Port* to 3333.
+        Give the Outbound Route a **Name** of "To Rack2" (to indicate the data's destination).
+        Leave the **Peer-to-Peer** radio button selected, then select the "Rack1" Identifier you just created from the
+        **Local Identifier to Secure the Connection** dropdown. Leave the **Protocol** set to "HTTP" and set the **Local Port** to 3333.
 
         <img alt="Create Outbound Route" src="/images/create-outbound-route.png"></img>
         Click **Save** to create the Outbound Route to **Rack2**.
 
     </Step>
     <Step title="Export Introduction">
-        The two <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> gateways will be connected to each other using the same <Tooltip tip="Composable Event Streaming Representation">CESR</Tooltip> file approach we used to connect Locksmith to each gateway.
-        To establish this connection you will not export an introduction to the Identifier you created for this <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> gateway from the Outbound Route grid.
+        The two <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> gateways will be
+        connected to each other using the same <Tooltip tip="Composable Event Streaming Representation">CESR</Tooltip>
+        file approach we used to connect Locksmith to each gateway. To establish this connection you will now export
+        an introduction to the Identifier you created for this
+        <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> gateway from the
+        **Outbound Route** grid.
         <Note>We export introductions from the route grids so they also contain gateway connection information that allows them to be discovered by other gateways </Note>
         <img alt="Export Introduction" src="/images/outbound-export-introduction.png"></img>
-        Open the Actions menu for the Outbound Route you just created and select the Export Introduction menu item.  A new file will be saved on your computer named "Rack1-To Rack2.cesr".  We will use this file in the next step.
+        Open the **Actions** menu for the Outbound Route you just created and select the **Export Introduction** menu item.
+        A new file will be saved on your computer named "Rack1-To Rack2.cesr".  We will use this file in the next step.
     </Step>
 </Steps>
 
 ## 5. Configure Inbound Route
 **Rack2** now becomes our inbound <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> gateway.  The second pre-configured instance of Mirth, **Mirth2** has a channel created is listening on port 5555 for inbound HTTP JSON files that it will write to a local directory.
 
-In this step, we will create an Inbound Route on **Rack2** that listens on port 4444 for signed and encrypted data sent from **RACK2**.  No other data will be accepted into this instance of <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> and therefore the **Mirth2** instance of Mirth Connect.
-
+In this step, we will create an Inbound Route on **Rack2** that listens on port 4444 for signed and encrypted data sent from **Rack1**.  No other data will be accepted into this instance of <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> and therefore the **Mirth2** instance of Mirth Connect.
+<Tip>Ensure you are in the **Rack2** <Tooltip tip="Administration User Interface">AUI</Tooltip> browser window.</Tip>
 <Steps>
     <Step title="Create RACK Identifier">
-        From the "Identifiers" screen on **Rack2**, click on "Add Identifier" and in the dialog, give the identifier an **Alias** of "Rack2" and set the **Number of Signing Keys**, **Number of Rotation Keys**, **Signing Threshold** and **Rotation Threshold** all to `1`:
+        Navigate to the "Identifiers" screen in the **Rack2**
+        <Tooltip tip="Administration User Interface">AUI</Tooltip>. Click on **Add Identifier**.
+        In the dialog that appears, give the identifier an **Alias** of "Rack2" and set the **Number of Signing Keys**,
+        **Number of Rotation Keys**, **Signing Threshold** and **Rotation Threshold** to `1`:
         <img alt="RACK Identifiers" src="/images/rack-create-inbound-identifier.png"></img>
 
-        Click **Save** to create an Identifier that is local to this <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> gateway.
+        Click **Save** to create an Identifier that is local to this
+        <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> gateway.
 
     </Step>
     <Step title="Connect to Remote Gateway">
-        Because we exported an introduction from **Rack1** we are able to create a remote gateway on **Rack2** before creating the Inbound Route.
+        Because we exported an introduction from **Rack1**, we are able to create a remote gateway on **Rack2** to use
+        during the creation of our **Inbound Route** in the next step.
 
-        Select "Remote Gateways" from the menu on the left side of the **Rack2** <Tooltip tip="Administration User Interface">AUI</Tooltip>:
+        Select **Remote Gateways** from the menu on the left:
         <img alt="Remote Gateways" src="/images/remote-gateways.png"></img>
 
         Click on **Add Remote Gateway**, set the **Alias** to "Rack1" and select the "Rack1-to Rack2.cesr" file exported from [Step 4.](#4-configure-outbound-route) above.
@@ -234,16 +249,20 @@ In this step, we will create an Inbound Route on **Rack2** that listens on port 
         <Tip>**Remember**: Everything in <Tooltip tip="Key Event Receipt Infrastructure">KERI</Tooltip> is "End-to-End Verifiable".  Each gateway verifies all key events and their signatures before accepting the key state into their own database.</Tip>
     </Step>
     <Step title="Create Inbound Routes">
-        Now we will define the Inbound Route from the **Rack1** gateway.  This is done from the **Inbound Routes** menu item on the left:
+        Now we will define the Inbound Route from the **Rack1** gateway. First select **Inbound Routes** from the menu on the left:
 
         <img alt="Inbound Routes" src="/images/inbound-routes.png"></img>
         Click on the **Add Inbound Route** button to create the route.
 
-        Give the Inbound Route an **Name** of "From Rack1" (to indicate the data's origin).
+        Give the Inbound Route a **Name** of "From Rack1" (to indicate the data's origin).
 
-        In the **Route Type** section, leave the **Peer-to-Peer** radio button selected, select the "Rack1" Identifier you just imported from the **Accept from Remote Gateway**, select the "172.31.0.5" IP address and enter 4444 in ** Accept on Port**.
+        In the **Route Type** section, leave the **Peer-to-Peer** radio button selected, select the "Rack1" Identifier
+        you just imported from the **Accept from Remote Gateway** dropdown. Select "172.31.0.5" from the **IP address / Host Name**
+        dropdown and enter 4444 in the **Accept on Port** field.
 
-        Leave the **Protocol** set to "HTTP" set destination **IP Address / Host Name** to "172.31.0.3" the **Port* to 5555.  That IP Address is the static IP address assigned to the **Mirth2** instance in the Docker compose file.  Also, the channel created in **Mirth2** is set to listen for incoming HTTP connections on port 5555.
+        In the **Forward To** section, leave the **Protocol** set to "HTTP", then set the destination **IP Address / Host Name**
+        to "172.31.0.3" and **Port** to 5555.  That IP Address is the static IP address assigned to the **Mirth2** instance in the Docker compose file
+        (The channel created in **Mirth2** is set to listen for incoming HTTP connections on port 5555).
 
         <img alt="Create Inbound Route" src="/images/create-inbound-route.png"></img>
         Click **Save** to create the Inbound Route from **Rack1**.
@@ -252,33 +271,40 @@ In this step, we will create an Inbound Route on **Rack2** that listens on port 
     <Step title="Export Introduction">
         As we did with the Outbound Route on **Rack1** we must export the introduction to **Rack2**, but this time from the Inbound Route grid:
         <img alt="Export Introduction" src="/images/inbound-export-introduction.png"></img>
-        Open the Actions menu for the Inbound Route you just created and select the Export Introduction menu item.  A new file will be saved on your computer named "Rack2-From Rack1.cesr".  We will use this file in the [next step](#6-launch-routing).
+        Open the **Actions** menu for the Inbound Route you just created and select the **Export Introduction** menu item.  A new file will be saved on your computer named "Rack2-From Rack1.cesr".  We will use this file in the [next step](#6-launch-routing).
     </Step>
 </Steps>
 
 ## 6. Launch Routing
-We will now complete the connection between the two gateways by loading the <Tooltip tip="Composable Event Streaming Representation">CESR</Tooltip> file from **Rack2** into **Rack1** and updating the Outbound Route we created in [Step 4.](#4-configure-outbound-route).
+We will now complete the connection between the two gateways by loading the <Tooltip tip="Composable Event Streaming Representation">CESR</Tooltip> file from **Rack2** into **Rack1** and updating the Outbound Route we created in [Step 4](#4-configure-outbound-route).
+
+<Tip>Ensure you are in the **Rack1** <Tooltip tip="Administration User Interface">AUI</Tooltip> browser window.</Tip>
 
 <Steps>
     <Step title="Complete Gateway Connections">
-        Back on the **Rack1** in the **Remote Gateways** section, click on **Add Remote Gateway**, set an **Alias** of "Rack2" and select the "Rack2-From Rack1.cesr" file create in the last step:
+        Navigate back to the **Remote Gateways** section of the **Rack1** <Tooltip tip="Administration User Interface">AUI</Tooltip>.
+        Click on **Add Remote Gateway**, then set an **Alias** of "Rack2" and select the "Rack2-From Rack1.cesr" file created in the last step:
         <img alt="RACK Identifiers" src="/images/rack2-create-remote.png"></img>
 
         Click on **Save** to load the key state and connection information from **Rack2** into the **Rack1** gateway.
 
     </Step>
     <Step title="Edit Outbound Route">
-        Because we created the Outbound Route first we were not able to select the destination Remote Gateway.  Navigate to the **Outbound Routes** section of **Rack1*, select **Edit** from the **Actions** menu of the Outbound Route and update **Send to Remote Gateway** to now point to "Rack2"
+        Because we created the Outbound Route first, we were not able to select the destination Remote Gateway.
+        Navigate to the **Outbound Routes** section of the **Rack1** <Tooltip tip="Administration User Interface">AUI</Tooltip>. Select **Edit** from the **Actions** menu of the
+        Outbound Route we created earlier and update **Send to Remote Gateway** to point to "Rack2"
         <img alt="Edit Outbound Route" src="/images/edit-outbound-route.png"></img>
 
         Click **Save** to complete the route configuration for both gateways.
     </Step>
     <Step title="Launch Routes">
-        Since you are now on the Outbound Routes grid of **Rack1**, you can launch this route by selecting **Launch** from the **Actions** menu of the Outbound Route named "To Rack2":
+        Launch this route by selecting **Launch** from the **Actions** menu of the Outbound Route named "To Rack2":
 
         <img alt="Create Remote Gateway" src="/images/launch-outbound.png"></img>
 
-        Perform the same operation on the inbound route in the **Inbound Routes** on **Rack2**
+        Perform the same operation on the inbound route in the **Inbound Routes** section of the **Rack2**
+        <Tooltip tip="Administration User Interface">AUI</Tooltip>.
+
         <img alt="Create Remote Gateway" src="/images/launch-inbound.png"></img>
 
         Both gateways are now launched as indicated by their status changing from **<font color="red" weight="bold">Idle</font>** to **<font color="green" weight="bold">Running</font>**.
@@ -291,15 +317,15 @@ We will now complete the connection between the two gateways by loading the <Too
 <Check>You have now completed the configuration of two <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> gateways and can exchange secure data!</Check>
 
 ## 7. Send Test Data
-As mentioned previously, the Docker compose file launched in [Step 1.](#1-launch-healthkeri-rack-and-mirth-connect) created 2 instances of Mirth Connect
+As mentioned previously, the Docker compose file launched in [Step 1](#1-launch-healthkeri-rack-and-mirth-connect) created 2 instances of Mirth Connect
 and configured them with Channels that would send data through our newly configured <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> gateways.
 
-**Mirth1** has a channel that is looking for any JSON files to be copied into its local `/opt/connect/data` directory that was mapped to the local `<rack-docker dir>/examples/data/volumes/mirth1` directory by Docker compose.
-When files show up in that directory, **Mirth1** will send those files via HTTP to the IP address and Port that **Rack1** is now listening on.
+**Mirth1** has a channel that is looking for any JSON files to be copied into its local `/opt/connect/data` directory (mapped to the `<rack-docker dir>/examples/data/volumes/mirth1` directory by Docker compose).
+When files show up in `/opt/connect/data`, **Mirth1** will send those files via HTTP to the IP address and Port that **Rack1** is now listening on.
 
 To facilitate testing, we have provided 2 directories (`<rack-docker dir>/examples/data/fhir-dataset` and `<rack-docker dir>/examples/data/fhir-dataset-large`) of sample FHIR data files that can be used to test the new secure connection.  We also included a Shell script that will copy the files into the correct local directory to be picked up by **Mirth1**.
 
-To send test files through the secure connection use the following command from the `<rack-docker dir>/examples` directory:
+To send test files through the secure connection, use the following command from the `<rack-docker dir>/examples` directory:
 
 ```bash Load Test
 ./load-test.sh fhir-dataset 50
@@ -307,9 +333,9 @@ To send test files through the secure connection use the following command from 
 
 This command will copy 50 random files from the `examples/data/fhir-dataset` directory to the `examples/data/volumes/mirth1` directory which will cause **Mirth1** to pick up those files and send them to **Rack1**
 
-**Rack1** will, in turn, sign and encrypt every file (the actual entire HTTP transaction, as a matter of fact) and send the now secured data to **Rack2** which will decrypt the data and recreate the HTTP transaction to send to **Mirth2**
+**Rack1** will, in turn, sign and encrypt every file (the entire HTTP transaction, as a matter of fact) and send the, now secured, data to **Rack2**, which will decrypt the data and recreate the HTTP transaction to send to **Mirth2**.
 
-Logging was left at the **INFO** level so you will see a series of log statements from **Rack1** and **Rack2** indicating the successful flow of data, such as the following:
+Logging was left at the **INFO** level so you will see a series of log statements from **Rack1** and **Rack2** indicating the successful flow of data, similar to the following:
 
 ```bash Rack
 rack-1-1  | 2025-02-17 18:33:12 [rack] INFO   Behavior for /fwd missing or does not have verify for said=ENAjc5b0gQTJo_9LEk74ltUhiDVSsiqROsPXNZpZDses
@@ -337,7 +363,7 @@ rack-2-1  | 2025-02-17 18:33:12 [rack] INFO   Behavior for /ping missing or does
 <Icon icon="hand-horns" syle="emoji"></Icon> You have sent fully secure data in **Zero-Trust** between two Mirth Connect integrations instances without SSL!
 ## 8. Verify Results
 
-The **Mirth2** instance is configured to write the files it receives from **Rack1** to its `/opt/connect/data` directory which was mapped to `examples/data/volumes/mirth2` by Docker compose.  To verify that the data flowed successfully through all 4 containers, you can check for new files that will now be in `examples/data/volumes/mirth2`:
+The **Mirth2** instance is configured to write the files it receives from **Rack1** to its `/opt/connect/data` directory (mapped to `examples/data/volumes/mirth2` by Docker compose).  To verify that the data flowed successfully through all 4 containers, you can check for new files that will now be in `examples/data/volumes/mirth2`:
 ```bash examples/data/volumes/mirth2
 ls -a ./examples/data/volumes/mirth2
 data/volumes/mirth2/1739817190096.dat-1739817190096-signed.json data/volumes/mirth2/1739817191043.dat-1739817191043-signed.json data/volumes/mirth2/1739817191876.dat-1739817191876-signed.json
@@ -361,11 +387,11 @@ data/volumes/mirth2/1739817190990.dat-1739817190990-signed.json data/volumes/mir
 
 You can also diff those files to see that the full FHIR records have been transferred completely.
 
-If you would like to verify that the data was sent between the <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> gateways signed and encrypted we recommend add a [Wireshark](https://hub.docker.com/r/linuxserver/wireshark) container to the `mirth-connect-rack-compose-sample.yaml` Docker compose file and analyze the network traffic between the `172.31.0.4` and `172.31.0.5` IP addresses.
+If you would like to verify that only signed and encrypted data was sent between the <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> gateways, we recommend adding a [Wireshark](https://hub.docker.com/r/linuxserver/wireshark) container to the `mirth-connect-rack-compose-sample.yaml` Docker compose file to analyze the network traffic between the `172.31.0.4` and `172.31.0.5` IP addresses.
 
 
 ## 9. Next Steps
-Now that you've connected two <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> gateways directly via a Peer-To-Peer connection you should see one main limitation with this configuration.
+Now that you've connected two <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> gateways directly via a Peer-To-Peer connection, you should see one main limitation with this configuration.
 
 At least one gateway will have to listen for incoming connections on a TCP port.  While this may be fine for local testing it can be challenging to test gateways on the Open Internet.
 
