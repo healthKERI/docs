@@ -138,7 +138,7 @@ The first step is using Locksmith is to create and open a **Vault** that will ho
 
 ## 3. Connect to RACK Gateways through Locksmith
 Your connection to the <Tooltip tip="Administration User Interface">AUI</Tooltip> for each <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> gateway is secured using the same <Tooltip tip="Key Event Receipt Infrastructure">KERI</Tooltip> and <Tooltip tip="Encrypt Sender then Sign Receiver">ESSR</Tooltip> technology at the heart of our gateways.
-To establish a secure connection to each gateway you must load the <Tooltip tip="Composable Event Streaming Representation">CESR</Tooltip> files copied from the running Docker containers in [Step 1.](#1-launch-healthkeri-rack-and-mirth-connect).
+To establish a secure connection to each gateway you must load the <Tooltip tip="Composable Event Streaming Representation">CESR</Tooltip> files copied from the running Docker containers in [Step 1](#1-launch-healthkeri-rack-and-mirth-connect).
 <Steps>
     <Step title="Create Remote Gateways">
         Select <Icon icon="envelope"></Icon> **Remote Identifiers** from the menu on the left
@@ -171,7 +171,7 @@ To establish a secure connection to each gateway you must load the <Tooltip tip=
         <img alt="Launch Proxies" src="/images/launch-proxy.png"></img>
     </Step>
     <Step title="Access RACK Gateways">
-        Launching the proxies will open two browser windows, one for each RACK instance. The browsers will display the <Tooltip tip="Administration User Interface">AUI</Tooltip> for each gateway.
+        Launching the proxies will open two browser windows, one for each <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> instance. The browsers will display the <Tooltip tip="Administration User Interface">AUI</Tooltip> for each gateway.
         <img alt="RACK Gateways" src="/images/gateways.png"></img>
     </Step>
 </Steps>
@@ -197,7 +197,7 @@ We will now create an Outbound Route on **Rack1** that listens on port 3333 and 
 
         Give the Outbound Route a **Name** of "To Rack2" (to indicate the data's destination).
         Leave the **Peer-to-Peer** radio button selected, then select the "Rack1" Identifier you just created from the
-        **Local Identifier to Secure the Connection**. Leave the **Protocol** set to "HTTP" and set the **Local Port** to 3333.
+        **Local Identifier to Secure the Connection** dropdown. Leave the **Protocol** set to "HTTP" and set the **Local Port** to 3333.
 
         <img alt="Create Outbound Route" src="/images/create-outbound-route.png"></img>
         Click **Save** to create the Outbound Route to **Rack2**.
@@ -291,7 +291,7 @@ We will now complete the connection between the two gateways by loading the <Too
     </Step>
     <Step title="Edit Outbound Route">
         Because we created the Outbound Route first, we were not able to select the destination Remote Gateway.
-        Navigate to the **Outbound Routes** section of **Rack1**. Select **Edit** from the **Actions** menu of the
+        Navigate to the **Outbound Routes** section of the **Rack1** <Tooltip tip="Administration User Interface">AUI</Tooltip>. Select **Edit** from the **Actions** menu of the
         Outbound Route we created earlier and update **Send to Remote Gateway** to point to "Rack2"
         <img alt="Edit Outbound Route" src="/images/edit-outbound-route.png"></img>
 
