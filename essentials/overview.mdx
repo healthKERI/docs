@@ -38,6 +38,11 @@ events. These events include the inception (creation) of an AID, any key rotatio
 delegations). Because each new event references the cryptographic hash of the previous event, the KEL provides an
 immutable history that is verifiable by anyone.
 
+### Key State
+Key state is the authoritative cryptographic state of an identifier at a given point in time. It represents the most
+recent key event in the KEL that defines the control and configuration of that identifier, along with associated
+data like sequence number, signing keys, witnesses, and any delegations.
+
 ### Witness
 To ensure high availability and security—even when direct exchange between controllers is not practical—KERI introduces
 witnesses. A controller of an AID selects and manages its own pool of witnesses, which can be hosted on any combination
