@@ -55,7 +55,8 @@ In the `rack-docker` repository there is a Docker compose file called `mirth-con
 docker compose -f ./examples/mirth-connect-rack-compose-sample.yaml up
 ```
 
-In addition to the two instances of <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> and Mirth, this compose file also creates two temporary containers that create one [channel](https://docs.nextgen.com/bundle/Mirth_User_Guide_4_5_0/page/connect/connect/topics/c_Channel_Components_connect_ug.html) on each Mirth Connect instance that are preconfigured to work with the <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> instances once this tutorial is complete.
+In addition to the two instances of <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> and Mirth, this compose file also creates two temporary containers that create one
+<Tooltip tip="In the context of Mirth Connect, a channel is a fundamental unit that defines the flow and transformation of data between different systems and application, acting as a bridge for healthcare data exchange. A channel is composed of a source connector (which recieves data) and one or more destination connectores (which send transformed data)">[channel](https://www.meditecs.com/kb/mirth-connect-channels-and-connectors/)</Tooltip> on each Mirth Connect instance that are preconfigured to work with the <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> instances once this tutorial is complete.
 After running the `docker compose` command above, the channels are created and started. The following output on your terminal window indicates that the all containers are operational and that you are ready to continue the tutorial:
 
 ``` bash Dockere Compose
@@ -87,7 +88,7 @@ mirth-cli-1-1 exited with code 0
 <Warning>The gateways launched in this tutorial were installing using the `--insecure` option.  They should **only** be used for local testing and experimentation.</Warning>
 
 #### CESR Files and Out-Of-Band-Introductions
-In order for <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> gateways to communicate with each other securely they need to be aware of each other's [key state](/essentials/overview) (the current set of signing keys to use for signature verification and encryption).
+In order for <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> gateways to communicate with each other securely they need to be aware of each other's [key state](/essentials/overview#key-state) (the current set of signing keys to use for signature verification and encryption).
   We accomplish this connection by exchanging each gateway's key event log in [CESR](https://trustoverip.github.io/tswg-cesr-specification/) encoded stream files in an Out-Of-Band-Introduction (OOBI).  These files are exported during the `rack install` command that created the Docker images and must be exported from each docker container now running a <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> gateway.
 
 To copy these <Tooltip tip="Composable Event Streaming Representation">CESR</Tooltip> files out of docker containers, use the following commands:
@@ -100,8 +101,8 @@ docker cp examples-rack-2-1:/opt/rack/data/Rack2-core.cesr ./rack-2.cesr
 We will be using these <Tooltip tip="Composable Event Streaming Representation">CESR</Tooltip> files later in the tutorial.
 
 ## 2. Create local identifiers with Locksmith
-Our local <Tooltip tip="Key Event Receipt Infrastructure">KERI</Tooltip> wallet and secure <Tooltip tip="Encrypt Sender then Sign Receiver">ESSR</Tooltip> proxy is called [Locksmith](http://localhost:3000/software#download-and-install).
-You will use **Locksmith** for the rest of this tutorial to establish secure connections to the <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> gateways Administration User Interface (AUI).
+Our local <Tooltip tip="Key Event Receipt Infrastructure">KERI</Tooltip> wallet and secure <Tooltip tip="Encrypt Sender then Sign Receiver">ESSR</Tooltip> proxy is called [Locksmith](/software#download-and-install).
+You will use **Locksmith** for the rest of this tutorial to establish secure connections to the <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> gateways' Administration User Interfaces (AUIs).
 
 The first step is using Locksmith is to create and open a **Vault** that will hold the Identifiers used for the remainder of this tutorial.
 
@@ -218,7 +219,7 @@ We will now create an Outbound Route on **Rack1** that listens on port 3333 and 
 </Steps>
 
 ## 5. Configure Inbound Route
-**Rack2** now becomes our inbound <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> gateway.  The second pre-configured instance of Mirth, **Mirth2** has a channel created is listening on port 5555 for inbound HTTP JSON files that it will write to a local directory.
+**Rack2** now becomes our inbound <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> gateway.  The second pre-configured instance of Mirth, **Mirth2** has a channel created that is listening on port 5555 for inbound HTTP JSON files that it will write to a local directory.
 
 In this step, we will create an Inbound Route on **Rack2** that listens on port 4444 for signed and encrypted data sent from **Rack1**.  No other data will be accepted into this instance of <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> and therefore the **Mirth2** instance of Mirth Connect.
 <Tip>Ensure you are in the **Rack2** <Tooltip tip="Administration User Interface">AUI</Tooltip> browser window.</Tip>
@@ -314,13 +315,18 @@ We will now complete the connection between the two gateways by loading the <Too
     </Step>
 </Steps>
 
-<Check>You have now completed the configuration of two <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> gateways and can exchange secure data!</Check>
+<Check>You have now completed the configuration of two <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> gateways and can exchange secure data! See the following network diagram for details.</Check>
+<img
+    src="/images/quickstart-network-diagram.png"
+    alt="Hero Light"
+/>
 
 ## 7. Send Test Data
+
 As mentioned previously, the Docker compose file launched in [Step 1](#1-launch-healthkeri-rack-and-mirth-connect) created 2 instances of Mirth Connect
 and configured them with Channels that would send data through our newly configured <Tooltip tip="Routing, Authentication and Confidentiality with KERI">RACK</Tooltip> gateways.
 
-**Mirth1** has a channel that is looking for any JSON files to be copied into its local `/opt/connect/data` directory (mapped to the `<rack-docker dir>/examples/data/volumes/mirth1` directory by Docker compose).
+**Mirth1** has a channel that is looking for any JSON files placed in its local `/opt/connect/data` directory (mapped to the `<rack-docker dir>/examples/data/volumes/mirth1` directory by Docker compose).
 When files show up in `/opt/connect/data`, **Mirth1** will send those files via HTTP to the IP address and Port that **Rack1** is now listening on.
 
 To facilitate testing, we have provided 2 directories (`<rack-docker dir>/examples/data/fhir-dataset` and `<rack-docker dir>/examples/data/fhir-dataset-large`) of sample FHIR data files that can be used to test the new secure connection.  We also included a Shell script that will copy the files into the correct local directory to be picked up by **Mirth1**.
@@ -331,7 +337,7 @@ To send test files through the secure connection, use the following command from
 ./load-test.sh fhir-dataset 50
 ```
 
-This command will copy 50 random files from the `examples/data/fhir-dataset` directory to the `examples/data/volumes/mirth1` directory which will cause **Mirth1** to pick up those files and send them to **Rack1**
+This command will copy 50 random files from the `<rack-docker dir>/examples/data/fhir-dataset` directory to the `<rack-docker dir>/examples/data/volumes/mirth1` directory which will cause **Mirth1** to pick up those files and send them to **Rack1**
 
 **Rack1** will, in turn, sign and encrypt every file (the entire HTTP transaction, as a matter of fact) and send the, now secured, data to **Rack2**, which will decrypt the data and recreate the HTTP transaction to send to **Mirth2**.
 
@@ -363,7 +369,7 @@ rack-2-1  | 2025-02-17 18:33:12 [rack] INFO   Behavior for /ping missing or does
 <Icon icon="hand-horns" syle="emoji"></Icon> You have sent fully secure data in **Zero-Trust** between two Mirth Connect integrations instances without SSL!
 ## 8. Verify Results
 
-The **Mirth2** instance is configured to write the files it receives from **Rack1** to its `/opt/connect/data` directory (mapped to `examples/data/volumes/mirth2` by Docker compose).  To verify that the data flowed successfully through all 4 containers, you can check for new files that will now be in `examples/data/volumes/mirth2`:
+The **Mirth2** instance is configured to write the files it receives from **Rack1** to its `/opt/connect/data` directory (mapped to `<rack-docker dir>/examples/data/volumes/mirth2` by Docker compose).  To verify that the data flowed successfully through all 4 containers, you can check for new files that will now be in `<rack-docker dir>/examples/data/volumes/mirth2`:
 ```bash examples/data/volumes/mirth2
 ls -a ./examples/data/volumes/mirth2
 data/volumes/mirth2/1739817190096.dat-1739817190096-signed.json data/volumes/mirth2/1739817191043.dat-1739817191043-signed.json data/volumes/mirth2/1739817191876.dat-1739817191876-signed.json
