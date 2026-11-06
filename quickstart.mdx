@@ -346,13 +346,27 @@ This command will copy 50 random files from the `<rack-docker dir>/examples/data
 Logging was left at the **INFO** level so you will see a series of log statements from **Rack1** and **Rack2** indicating the successful flow of data, similar to the following:
 
 ```bash Rack
-rack-1-1  | 2026-11-03 04:22:57 [rack-Rack1] INFO     Parsed Request: POST /fhir/ (1, 1)
-rack-2-1  | 2026-11-03 04:22:57 [rack-Rack2] INFO     Message from EKMP7lWnEj5lZ5q7aGMDTeWMmZ06PE0eAN4T0vK_Y9a8 to EARpAxPB1S_0ZreARz1mn0O9YBjnF4AD6O6PBq_GBPCH
-rack-2-1  | 2026-11-03 04:22:57 [rack-Rack2] INFO     exn with said=EIbtoCOJccT5RNtWagIr03dkkyCnfmcgG6jK5UEUdwuj saved
-rack-2-1  | 2026-11-03 04:22:57 [rack-Rack2] INFO     Server Rack2-3: sent response protocol messages: 487
-rack-1-1  | 2026-11-03 04:22:57 [rack-Rack1] INFO     ack=ELK9mCr7IpComeFp4qbnlsklnNvAmDde373r1shITMPp received for exn message EIbtoCOJccT5RNtWagIr03dkkyCnfmcgG6jK5UEUdwuj
-rack-1-1  | 2026-11-03 04:22:57 [rack-Rack1] INFO     tcp client cue received for evt=ELK9mCr7IpComeFp4qbnlsklnNvAmDde373r1shITMPp
-rack-1-1  | 2026-11-03 04:22:57 [rack-Rack1] INFO     httpsrv sending 0 bytes for 0AARs2nkDTMFVZ0TEPSi1I-l
+rack-1-1  | 2025-02-17 18:33:12 [rack] INFO   Behavior for /fwd missing or does not have verify for said=ENAjc5b0gQTJo_9LEk74ltUhiDVSsiqROsPXNZpZDses
+rack-1-1  | 2025-02-17 18:33:12 [rack] INFO   Message from EAVyvgXvjcYxBZYDtbxpEaX4F6RLuyhrw_aagZaq0iXt to EPTKEkkVw9XuCsMQ4rdqIyK8bQJQyGHWlAaWg09LuGo7
+rack-1-1  | 2025-02-17 18:33:12 [rack] INFO   tcp client cue received for evt=ENAjc5b0gQTJo_9LEk74ltUhiDVSsiqROsPXNZpZDses
+rack-1-1  | 2025-02-17 18:33:12 [rack] INFO   tcp -> [EGVh6SBUMqWEsy5FSm2H4anB8OI4HdF70rtQxru_m6Hx]/[EMfZQm1_0YS6chhM6rV1jhC7Dwh5wBdQc0TpnpYaW6Er] -> dessr: msg recv.
+rack-1-1  | 2025-02-17 18:33:12 [rack] INFO   tcp -> [EGVh6SBUMqWEsy5FSm2H4anB8OI4HdF70rtQxru_m6Hx]/[EMfZQm1_0YS6chhM6rV1jhC7Dwh5wBdQc0TpnpYaW6Er] -> dessr: msg sent.
+rack-1-1  | 2025-02-17 18:33:12 [rack] INFO   Behavior for /essr/req missing or does not have verify for said=ED7e1Xs8MijyMnh_sF2TefIRQYwePUOFRKF4W4enacCm
+rack-1-1  | 2025-02-17 18:33:12 [rack] INFO   dessr -> [EGVh6SBUMqWEsy5FSm2H4anB8OI4HdF70rtQxru_m6Hx]/[EMfZQm1_0YS6chhM6rV1jhC7Dwh5wBdQc0TpnpYaW6Er] -> httpsrv: msg recv.
+rack-1-1  | 2025-02-17 18:33:12 [rack] INFO   dessr -> [EGVh6SBUMqWEsy5FSm2H4anB8OI4HdF70rtQxru_m6Hx]/[EMfZQm1_0YS6chhM6rV1jhC7Dwh5wBdQc0TpnpYaW6Er] -> httpsrv: msg sent.
+rack-1-1  | 2025-02-17 18:33:12 [rack] INFO   Behavior for /http/rep missing or does not have verify for said=EHfg2cuhkXV0F3G8MoHi0CjBvyHXCjlZ_wHEsRBc-XFc
+rack-1-1  | 2025-02-17 18:33:12 [rack] INFO   httpsrv sending 0 bytes for EAG3nLVV1uTw6zErIY2tYrw3qtMw1kj7g4N78C655dkd
+rack-2-1  | 2025-02-17 18:33:12 [rack] INFO   Behavior for /fwd missing or does not have verify for said=ECsNTwvaF5GccfgyF3jOkJK52mBHX2xGj8M0S97hlUMO
+rack-2-1  | 2025-02-17 18:33:12 [rack] INFO   Message from EK4iFDRWMPH2mJ_VSJZt5VgCTg7wupzKX5nipreSOBuR to EJ8Rx6lal6S7mlrhp6OuHkxAizP7N5ufzllu4YIbjjvV
+rack-2-1  | 2025-02-17 18:33:12 [rack] INFO   exn with said=ECsNTwvaF5GccfgyF3jOkJK52mBHX2xGj8M0S97hlUMO saved
+rack-2-1  | 2025-02-17 18:33:12 [rack] INFO   Server core: sent response protocol messages: 487
+rack-2-1  | 2025-02-17 18:33:12 [rack] INFO   tcpsrv -> [EK4iFDRWMPH2mJ_VSJZt5VgCTg7wupzKX5nipreSOBuR]/[EJ8Rx6lal6S7mlrhp6OuHkxAizP7N5ufzllu4YIbjjvV] -> dessr: msg recv.
+rack-2-1  | 2025-02-17 18:33:12 [rack] INFO   tcpsrv -> [EK4iFDRWMPH2mJ_VSJZt5VgCTg7wupzKX5nipreSOBuR]/[EJ8Rx6lal6S7mlrhp6OuHkxAizP7N5ufzllu4YIbjjvV] -> dessr: msg sent.
+rack-2-1  | 2025-02-17 18:33:12 [rack] INFO   Behavior for /essr/req missing or does not have verify for said=EPCBtqy5MsjRMV7-55Qv3MNxOgyhrMrH25C9yWRHIAaf
+rack-2-1  | 2025-02-17 18:33:12 [rack] INFO   dessr -> [EK4iFDRWMPH2mJ_VSJZt5VgCTg7wupzKX5nipreSOBuR]/[EJ8Rx6lal6S7mlrhp6OuHkxAizP7N5ufzllu4YIbjjvV] -> httpcall: msg recv.
+rack-2-1  | 2025-02-17 18:33:12 [rack] INFO   dessr -> [EK4iFDRWMPH2mJ_VSJZt5VgCTg7wupzKX5nipreSOBuR]/[EJ8Rx6lal6S7mlrhp6OuHkxAizP7N5ufzllu4YIbjjvV] -> httpcall: msg sent.
+rack-2-1  | 2025-02-17 18:33:12 [rack] INFO   Behavior for /ping missing or does not have verify for said=EEKa6p_xmPN8Hzeerls_NoDufr5cdNH2NkyAnlw44twL
+rack-2-1  | 2025-02-17 18:33:12 [rack] INFO   Behavior for /ping missing or does not have handle for said=EEKa6p_xmPN8Hzeerls_NoDufr5cdNH2NkyAnlw44twL
 ```
 <Icon icon="hand-horns" syle="emoji"></Icon> You have sent fully secure data in **Zero-Trust** between two Mirth Connect integrations instances without SSL!
 ## 8. Verify Results
