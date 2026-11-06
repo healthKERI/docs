@@ -1,6 +1,6 @@
 ---
 title: 'Software'
-description: 'Download and install Locksmith and our tutorial repository.'
+description: 'Download and install KERIGuard Identity Manager (KIM) and our tutorial repository.'
 ---
 
 <Info>
@@ -12,50 +12,68 @@ Follow these steps to install and run our tutorials on your operating system:
 
 ### Download and Install
 
-**Step 1**: Install Locksmith:
+**Step 1**: Install KERIGuard Identity Manager (KIM):
 
-Locksmith is our [KERI](/essentials/overview) identity wallet and secure web proxy GUI.  We currently have installable versions for macOS (arm64) and Windows 11 PCs.  To use any other operating system, you can download our Python Wheel and install as described below
+KERIGuard Identity Manager (KIM) is our [KERI](/essentials/overview) identity wallet and secure web proxy GUI.  We currently have installable versions for macOS (arm64) and Windows 11 PCs.  To use any other operating system, you can download our Python Wheel and install as described below
 
 (Other native installers will be available shortly)
 
 <Tabs>
     <Tab title="macOS">
         ```bash Shell
-        curl -s -L -o locksmith.dmg https://healthkeri-deployment.sfo3.digitaloceanspaces.com/locksmith/v0.0.1/MacOS/Locksmith.dmg
+        curl -s -L -o KERIGuard.dmg https://healthkeri-deployment.sfo3.digitaloceanspaces.com/keriguard-identity-manager/current/MacOS/KERIGuard.dmg
         ```
 
-        Or you can download [Locksmith](https://healthkeri-deployment.sfo3.digitaloceanspaces.com/locksmith/v0.0.1/MacOS/Locksmith.dmg) directly.
+        Or you can download [KIM for macOS](https://healthkeri-deployment.sfo3.digitaloceanspaces.com/keriguard-identity-manager/current/MacOS/KERIGuard.dmg) directly.
 
-        Locate `locksmith.dmg` in Finder, double click and drag the Locksmith Icon into Applications folder.
+        Locate `KERIGuard.dmg` in Finder, double click and drag the KERIGuard Icon into Applications folder.
         <img
             className="block"
             src="/images/locksmith-install.png"
-            alt="Locksmith"
+            alt="KERIGuard Identity Manager"
         />
 
     </Tab>
     <Tab title="Windows">
         ```bash Shell
-        curl -s -L -o locksmith.zip https://healthkeri-deployment.sfo3.digitaloceanspaces.com/locksmith/v0.0.1/Windows/Locksmith.zip
+        curl -s -L -o KERIGuardSetup.exe https://healthkeri-deployment.sfo3.digitaloceanspaces.com/keriguard-identity-manager/current/Windows/KERIGuardSetup.exe
         ```
 
-        Or you can download [Locksmith](https://healthkeri-deployment.sfo3.digitaloceanspaces.com/locksmith/v0.0.1/Windows/Locksmith.zip) directly.
+        Or you can download the [KIM installer for Windows](https://healthkeri-deployment.sfo3.digitaloceanspaces.com/keriguard-identity-manager/current/Windows/KERIGuardSetup.exe) directly.
 
-        Locate `locksmith.zip` in Windows Explorer, extract with 7-Zip or your choice of extractor. Inside the extracted
-        folder, right click `Locksmith.exe` to create a shortcut or double click to run from inside the folder.
+        Locate `KERIGuardSetup.exe` in Windows Explorer and double click it to run the installer, then launch KERIGuard when it completes.
+
+        For managed or silent enterprise deployments, an [MSI installer](https://healthkeri-deployment.sfo3.digitaloceanspaces.com/keriguard-identity-manager/current/Windows/KERIGuardSetup.msi) is also available:
+
+        ```bash Shell
+        curl -s -L -o KERIGuardSetup.msi https://healthkeri-deployment.sfo3.digitaloceanspaces.com/keriguard-identity-manager/current/Windows/KERIGuardSetup.msi
+        ```
 
     </Tab>
     <Tab title="Python">
-        If you are using an operation system other than macOS, you need to use the correct version of Python specified [here](/environment):
+        If you are using an operating system other than macOS, you need to use the correct version of Python specified [here](/environment):
 
-      ```bash Shell
-      python -m venv ./locksmith
-      source ./locksmith/bin/activate
-      curl -s -L -o rack-1.0.0-py3-none-any.whl https://healthkeri-deployment.sfo3.digitaloceanspaces.com/rack/rack-1.0.0-py3-none-any.whl
-      curl -s -L -o Locksmith-0.0.1-py3-none-any.whl https://healthkeri-deployment.sfo3.digitaloceanspaces.com/locksmith/v0.0.1/Locksmith-0.0.1-py3-none-any.whl
-      pip install rack-1.0.0-py3-none-any.whl
-      pip install Locksmith-0.0.1-py3-none-any.whl
+      <CodeGroup>
+
+      ```bash macOS / Linux
+      python -m venv ./kim
+      source ./kim/bin/activate
+      curl -s -L -o rack-1.3.0-py3-none-any.whl https://healthkeri-deployment.sfo3.digitaloceanspaces.com/rack/rack-1.3.0-py3-none-any.whl
+      curl -s -L -o KIM-py3-none-any.whl https://healthkeri-deployment.sfo3.digitaloceanspaces.com/keriguard-identity-manager/current/KIM-py3-none-any.whl
+      pip install rack-1.3.0-py3-none-any.whl
+      pip install KIM-py3-none-any.whl
       ```
+
+      ```powershell Windows (PowerShell)
+      python -m venv .\kim
+      .\kim\Scripts\Activate.ps1
+      curl.exe -s -L -o rack-1.3.0-py3-none-any.whl https://healthkeri-deployment.sfo3.digitaloceanspaces.com/rack/rack-1.3.0-py3-none-any.whl
+      curl.exe -s -L -o KIM-py3-none-any.whl https://healthkeri-deployment.sfo3.digitaloceanspaces.com/keriguard-identity-manager/current/KIM-py3-none-any.whl
+      pip install rack-1.3.0-py3-none-any.whl
+      pip install KIM-py3-none-any.whl
+      ```
+
+      </CodeGroup>
 
         <Info>**Recommended:** We recommend using a unique Python virtual environment as detailed above.</Info>
     </Tab>
@@ -77,18 +95,29 @@ cd rack-docker
 
 
 
-### Launching Locksmith
+### Launching KIM
 
-If you downloaded one of our native installers for [Locksmith](#download-and-install) please use your Operating System to find and launch the application.
+If you downloaded one of our native installers for [KIM](#download-and-install) please use your Operating System to find and launch the application.
 
-If you installed the Python wheel in a virtual machine, you can launch Locksmith with the following command:
+If you installed the Python wheel in a virtual machine, you can launch KIM with the following command:
 
-```bash
+<CodeGroup>
+
+```bash macOS / Linux
 source ${PATH_TO_VENV}/bin/activate
-lockmsith
+python -m locksmith.main
 ```
 
-Locksmith will attempt to create database files in one of two directories.  If you have a directory named `/usr/local/var/keri` and the current user has write access to that directory it will create all database files and keystores at that location.
+```powershell Windows (PowerShell)
+& "$PATH_TO_VENV\Scripts\Activate.ps1"
+python -m locksmith.main
+```
+
+</CodeGroup>
+
+<Note>The Python wheel does not install a dedicated launch command, so start KIM by running its `locksmith.main` module as shown above.</Note>
+
+KIM will attempt to create database files in one of two directories.  If you have a directory named `/usr/local/var/keri` and the current user has write access to that directory it will create all database files and keystores at that location.
 Otherwise, it will create and use a directory named `.keri` in the current user's home directory.  If you want to back up your KERI identity information and your keystore, you can back up which ever of these two directories is created on your device.
 
 
